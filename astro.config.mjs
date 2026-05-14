@@ -2,19 +2,41 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
+import { brand } from './src/config/brand.ts';
+
+const { colors } = brand;
 
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'NexusDocs AI',
-      description: 'Documentação viva do CRM com IA — ferramenta de engenharia interna',
-      social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/automacoeslab-bit/nexusdocs-ai' },
-      ],
+      title: brand.name,
+      description: brand.description,
+      logo: brand.logo,
       defaultLocale: 'root',
       locales: {
         root: { label: 'Português', lang: 'pt-BR' },
       },
+      social: [
+        { icon: 'github', label: 'GitHub', href: brand.github },
+      ],
+      // Injeta as cores da marca como CSS custom properties
+      // Qualquer mudança em brand.colors reflete automaticamente no site
+      head: [
+        {
+          tag: 'style',
+          content: `
+            :root {
+              --accent:  ${colors.accent};
+              --bg:      ${colors.bg};
+              --surface: ${colors.surface};
+              --card:    ${colors.card};
+              --border:  ${colors.border};
+              --text:    ${colors.text};
+              --muted:   ${colors.muted};
+            }
+          `,
+        },
+      ],
       customCss: [
         './src/styles/global.css',
         './src/styles/custom.css',

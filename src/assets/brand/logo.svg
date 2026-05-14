@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" fill="none">
+  <!-- Substitua este arquivo pelo logo SVG do cliente -->
+  <rect width="28" height="28" x="0" y="2" rx="6" fill="#3B82F6"/>
+  <path d="M8 16 L14 10 L20 16 L14 22 Z" fill="white" opacity="0.9"/>
+  <path d="M14 10 L20 16 L26 10" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <text x="36" y="21" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FAFAFA">NexusDocs</text>
+</svg>
