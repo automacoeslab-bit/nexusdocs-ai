@@ -3,7 +3,8 @@ title: Visão Geral
 description: O que é o NexusDocs AI e como ele funciona
 ---
 
-import { Badge, Card, CardGrid } from '@astrojs/starlight/components';
+import { Badge } from '@astrojs/starlight/components';
+import FeatureCard from '../../../components/ui/FeatureCard.astro';
 
 # Visão Geral <Badge text="v1.0" variant="note" />
 
@@ -27,20 +28,41 @@ Esta documentação cobre:
 
 ## Capacidades Principais
 
-<CardGrid>
-  <Card title="AI Agents Especializados" icon="rocket">
-    Agentes de IA focados em tarefas específicas: qualificação, scoring, follow-up automático e análise de sentimento.
-  </Card>
-  <Card title="Pipeline Inteligente" icon="list-format">
-    Fluxo de vendas com scoring automático, priorização por IA e alertas de oportunidade em tempo real.
-  </Card>
-  <Card title="Integrações Nativas" icon="puzzle">
-    Conectores para e-mail, calendário, Slack, WhatsApp Business e ERPs via API padronizada.
-  </Card>
-  <Card title="Observabilidade Total" icon="information">
-    Logs estruturados, traces de decisões de IA, métricas de performance e dashboards operacionais.
-  </Card>
-</CardGrid>
+<div class="feature-grid">
+  <FeatureCard
+    icon="🤖"
+    title="AI Agents Especializados"
+    description="Agentes de IA focados em tarefas específicas: qualificação, scoring, follow-up automático e análise de sentimento."
+    href="/ai-agents/"
+    badge="Core"
+  />
+  <FeatureCard
+    icon="📊"
+    title="Pipeline Inteligente"
+    description="Fluxo de vendas com scoring automático, priorização por IA e alertas de oportunidade em tempo real."
+    href="/workflows/"
+  />
+  <FeatureCard
+    icon="🔌"
+    title="Integrações Nativas"
+    description="Conectores para e-mail, calendário, Slack, WhatsApp Business e ERPs via API padronizada."
+    href="/api-reference/"
+  />
+  <FeatureCard
+    icon="🔍"
+    title="Observabilidade Total"
+    description="Logs estruturados, traces de decisões de IA, métricas de performance e dashboards operacionais."
+  />
+</div>
+
+<style>{`
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+`}</style>
 
 ---
 
