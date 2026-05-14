@@ -11,6 +11,10 @@ export default defineConfig({
       social: [
         { icon: 'github', label: 'GitHub', href: 'https://github.com/your-org/nexusdocs-ai' },
       ],
+      defaultLocale: 'root',
+      locales: {
+        root: { label: 'Português', lang: 'pt-BR' },
+      },
       customCss: [
         './src/styles/global.css',
         './src/styles/custom.css',

@@ -1,11 +1,6 @@
 /* src/styles/custom.css */
 /* Override Starlight CSS variables for NexusDocs AI premium dark theme */
 
-/* Force dark color scheme */
-:root {
-  color-scheme: dark;
-}
-
 /* Starlight theme variables — dark mode values applied globally */
 :root,
 [data-theme='dark'],
@@ -70,7 +65,7 @@ header.header {
   border-radius: 4px;
   padding: 0.125rem 0.375rem;
   font-size: 0.875em;
-  color: #93C5FD;
+  color: var(--sl-color-accent-high);
 }
 
 /* Pre / code blocks */
