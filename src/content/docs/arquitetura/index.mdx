@@ -1,8 +1,115 @@
 ---
 title: Arquitetura
-description: Em construção
+description: Visão técnica do sistema — C4 Context e Container diagrams
 ---
 
-# Arquitetura
+import { Badge } from '@astrojs/starlight/components';
+import MermaidDiagram from '../../../components/ui/MermaidDiagram.astro';
 
-Documentação em construção.
+export const c4Context = `
+flowchart TD
+    U1[Vendedor\nGerencia leads e oportunidades] --> CRM
+    U2[Gestor Comercial\nAcompanha métricas e metas] --> CRM
+    U3[Time de Engenharia\nDesenvolve e mantém] --> CRM
+
+    CRM[CRM com IA\nPlataforma de gestão de relacionamento\npotencializada por agentes de IA]
+
+    CRM --> E1[E-mail e Calendar\nGmail, Outlook]
+    CRM --> E2[WhatsApp Business\nComunicação com leads]
+    CRM --> E3[Anthropic Claude API\nLLM para reasoning]
+    CRM --> E4[ERP Corporativo\nDados de clientes e contratos]
+
+    style CRM fill:#1D4ED8,color:#fff,stroke:#3B82F6
+    style U1 fill:#18181B,color:#FAFAFA,stroke:#27272A
+    style U2 fill:#18181B,color:#FAFAFA,stroke:#27272A
+    style U3 fill:#18181B,color:#FAFAFA,stroke:#27272A
+    style E1 fill:#111115,color:#A1A1AA,stroke:#27272A
+    style E2 fill:#111115,color:#A1A1AA,stroke:#27272A
+    style E3 fill:#111115,color:#A1A1AA,stroke:#27272A
+    style E4 fill:#111115,color:#A1A1AA,stroke:#27272A
+`;
+
+export const c4Container = `
+flowchart TD
+    U[Usuario\nVendedor ou Gestor]
+
+    subgraph CRM [CRM com IA]
+        WA[Web App\nNext.js e React\nInterface principal do CRM]
+        AG[API Gateway\nNode.js e Fastify\nAutenticacao e roteamento]
+        AI[AI Engine\nPython e LangChain\nOrquestracao de agentes]
+        WK[Background Worker\nNode.js e BullMQ\nFilas assincronas]
+        DB[(PostgreSQL com pgvector\nDados e embeddings)]
+        RD[(Redis\nCache e filas)]
+    end
+
+    EX1[Claude API\nAnthropic]
+    EX2[E-mail e Calendar\nProvedores externos]
+
+    U --> WA
+    WA --> AG
+    AG --> AI
+    AG --> DB
+    AG --> RD
+    AI --> EX1
+    AI --> DB
+    WK --> EX2
+    WK --> RD
+
+    style WA fill:#1D4ED8,color:#fff,stroke:#3B82F6
+    style AG fill:#1D4ED8,color:#fff,stroke:#3B82F6
+    style AI fill:#7C3AED,color:#fff,stroke:#8B5CF6
+    style WK fill:#18181B,color:#FAFAFA,stroke:#27272A
+    style DB fill:#064E3B,color:#fff,stroke:#059669
+    style RD fill:#7F1D1D,color:#fff,stroke:#DC2626
+`;
+
+# Arquitetura do Sistema <Badge text="C4 Model" variant="tip" />
+
+O sistema segue o modelo C4 para documentação de arquitetura — quatro níveis de abstração que permitem comunicar o design para diferentes audiências.
+
+---
+
+## C4 Level 1 — Context Diagram
+
+Mostra o sistema como uma caixa preta e como ele se relaciona com usuários e sistemas externos.
+
+<MermaidDiagram
+  code={c4Context}
+  caption="C4 Level 1 — Sistema CRM com IA e suas dependências externas"
+/>
+
+---
+
+## C4 Level 2 — Container Diagram
+
+Mostra os principais contêineres (aplicações, serviços, bancos de dados) que compõem o sistema.
+
+<MermaidDiagram
+  code={c4Container}
+  caption="C4 Level 2 — Contêineres internos do CRM com IA"
+/>
+
+---
+
+## Decisões Arquiteturais
+
+### Por que AI Engine separado?
+O AI Engine em Python permite usar o ecossistema LangChain/LangGraph para orquestração de agentes. Desacoplado do API Gateway, pode ser escalado, versionado e atualizado de forma independente.
+
+### Por que pgvector?
+Embeddings de leads, e-mails e interações são armazenados junto com os dados relacionais no PostgreSQL via extensão pgvector. Elimina a necessidade de um vector store separado (Pinecone, Weaviate) na V1.
+
+### Por que Redis para filas?
+O BullMQ usa Redis nativamente. Follow-ups, envios de e-mail e processamentos de IA são enfileirados e processados de forma assíncrona sem bloquear a API.
+
+---
+
+## Fluxo de uma Requisição Típica
+
+1. Vendedor acessa o pipeline no **Web App**
+2. Web App chama **API Gateway** para buscar leads com scoring atualizado
+3. API Gateway verifica cache no **Redis** — se hit, retorna imediatamente
+4. Se miss, consulta **PostgreSQL** e solicita ao **AI Engine** re-scoring
+5. AI Engine chama **Claude API** com contexto do lead
+6. Score atualizado é salvo no **PostgreSQL** e cacheado no **Redis**
+7. Resposta retorna ao usuário em menos de 200ms (cache hit) ou menos de 2s (cold path)
