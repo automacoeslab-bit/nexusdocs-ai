@@ -1,8 +1,79 @@
 ---
 title: Visão Geral
-description: Em construção
+description: O que é o NexusDocs AI e como ele funciona
 ---
 
-# Visão Geral
+import { Badge, Card, CardGrid } from '@astrojs/starlight/components';
 
-Documentação em construção.
+# Visão Geral <Badge text="v1.0" variant="note" />
+
+**NexusDocs AI** é a plataforma de documentação viva do nosso CRM com inteligência artificial. Construída como produto de engenharia, não como wiki — versionada, automatizada, e projetada para times técnicos que se movem rápido.
+
+---
+
+## O que é este sistema
+
+O CRM com IA é uma plataforma de gestão de relacionamento com clientes potencializada por agentes de IA especializados. Esses agentes operam em pipelines de vendas, qualificação de leads, análise de interações e automação de follow-ups.
+
+Esta documentação cobre:
+
+- **Arquitetura** — como os componentes se comunicam
+- **AI Agents** — quem são os agentes e o que fazem
+- **API Reference** — contratos e endpoints
+- **Workflows** — fluxos automatizados end-to-end
+- **Governança** — políticas, segurança e compliance
+
+---
+
+## Capacidades Principais
+
+<CardGrid>
+  <Card title="AI Agents Especializados" icon="rocket">
+    Agentes de IA focados em tarefas específicas: qualificação, scoring, follow-up automático e análise de sentimento.
+  </Card>
+  <Card title="Pipeline Inteligente" icon="list-format">
+    Fluxo de vendas com scoring automático, priorização por IA e alertas de oportunidade em tempo real.
+  </Card>
+  <Card title="Integrações Nativas" icon="puzzle">
+    Conectores para e-mail, calendário, Slack, WhatsApp Business e ERPs via API padronizada.
+  </Card>
+  <Card title="Observabilidade Total" icon="information">
+    Logs estruturados, traces de decisões de IA, métricas de performance e dashboards operacionais.
+  </Card>
+</CardGrid>
+
+---
+
+## Stack Tecnológica
+
+| Camada | Tecnologia | Papel |
+|--------|-----------|-------|
+| Frontend | React + Next.js | Interface do usuário CRM |
+| API Gateway | Node.js + Fastify | Roteamento e autenticação |
+| AI Engine | Python + LangChain | Orquestração de agentes |
+| LLM | Claude (Anthropic) | Reasoning e geração de texto |
+| Database | PostgreSQL + pgvector | Dados relacionais + embeddings |
+| Cache | Redis | Sessões e respostas de IA |
+| Infra | AWS ECS + RDS | Compute e persistência |
+| CI/CD | GitHub Actions | Pipeline de build e deploy |
+
+---
+
+## Princípios de Design
+
+### Agentes como Serviços
+Cada agente de IA é um serviço independente com contrato de API bem definido. Pode ser atualizado, versionado e monitorado de forma isolada.
+
+### Decisões Rastreáveis
+Toda decisão tomada por IA é logada com contexto, prompt, resposta e metadados. Nenhuma "caixa preta" em produção.
+
+### Segurança por Design
+PII (Personally Identifiable Information) nunca passa pelo modelo de IA diretamente. Dados são anonimizados antes de qualquer chamada ao LLM.
+
+---
+
+## Como Navegar Esta Documentação
+
+Comece pela [Arquitetura](/arquitetura/) para entender como os componentes se relacionam.  
+Em seguida, explore os [AI Agents](/ai-agents/) para entender as capacidades de IA.  
+Use a [API Reference](/api-reference/) como referência técnica durante o desenvolvimento.
