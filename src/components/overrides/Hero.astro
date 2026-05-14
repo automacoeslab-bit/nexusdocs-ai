@@ -1,19 +1,18 @@
 ---
 // src/components/overrides/Hero.astro
 // Override do Hero do Starlight para NexusDocs AI
-import type { Props } from '@astrojs/starlight/props';
+// Starlight v0.39 expõe os dados via Astro.locals.starlightRoute, não via Astro.props.entry
 
-const { entry } = Astro.props;
-// entry may be undefined on non-content pages (e.g. 404)
-const hero = entry?.data?.hero;
-
-// Starlight v0.39: action.icon may be { type: string, name: string } or undefined
 type HeroAction = {
   link: string;
   text: string;
   variant?: 'primary' | 'secondary' | 'minimal';
   icon?: { type: string; name: string };
 };
+
+const entry = (Astro.locals as any).starlightRoute?.entry;
+const hero = entry?.data?.hero;
+const heroTitle = hero?.title ?? entry?.data?.title;
 ---
 
 {hero ? (
@@ -27,7 +26,7 @@ type HeroAction = {
         <span class="nexus-hero__badge-version">v1.0</span>
       </div>
 
-      <h1 class="nexus-hero__title">{hero.title}</h1>
+      <h1 class="nexus-hero__title">{heroTitle}</h1>
 
       {hero.tagline && (
         <p class="nexus-hero__tagline">{hero.tagline}</p>
