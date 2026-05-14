@@ -146,10 +146,14 @@ body {
   border-spacing: 0;
   width: 100%;
   border-radius: 8px;
-  overflow: hidden;
   border: 1px solid var(--border);
   margin: 2rem 0;
 }
+
+.sl-markdown-content th:first-child  { border-radius: 7px 0 0 0; }
+.sl-markdown-content th:last-child   { border-radius: 0 7px 0 0; }
+.sl-markdown-content tr:last-child td:first-child { border-radius: 0 0 0 7px; }
+.sl-markdown-content tr:last-child td:last-child  { border-radius: 0 0 7px 0; }
 
 .sl-markdown-content th {
   background-color: var(--accent);
