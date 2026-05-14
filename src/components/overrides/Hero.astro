@@ -1,0 +1,193 @@
+---
+// src/components/overrides/Hero.astro
+// Override do Hero do Starlight para NexusDocs AI
+import type { Props } from '@astrojs/starlight/props';
+
+const { entry } = Astro.props;
+// entry may be undefined on non-content pages (e.g. 404)
+const hero = entry?.data?.hero;
+
+// Starlight v0.39: action.icon may be { type: string, name: string } or undefined
+type HeroAction = {
+  link: string;
+  text: string;
+  variant?: 'primary' | 'secondary' | 'minimal';
+  icon?: { type: string; name: string };
+};
+---
+
+{hero ? (
+  <div class="nexus-hero">
+    <div class="nexus-hero__glow" aria-hidden="true"></div>
+    <div class="nexus-hero__content">
+
+      <div class="nexus-hero__badge">
+        <span class="nexus-hero__badge-dot"></span>
+        <span>NexusDocs AI</span>
+        <span class="nexus-hero__badge-version">v1.0</span>
+      </div>
+
+      <h1 class="nexus-hero__title">{hero.title}</h1>
+
+      {hero.tagline && (
+        <p class="nexus-hero__tagline">{hero.tagline}</p>
+      )}
+
+      {hero.actions && hero.actions.length > 0 && (
+        <div class="nexus-hero__actions">
+          {(hero.actions as HeroAction[]).map((action) => (
+            <a
+              href={action.link}
+              class:list={[
+                'nexus-hero__action',
+                action.variant === 'primary'
+                  ? 'nexus-hero__action--primary'
+                  : 'nexus-hero__action--secondary',
+              ]}
+            >
+              {action.text}
+              {action.icon?.name === 'right-arrow' && <span aria-hidden="true"> →</span>}
+            </a>
+          ))}
+        </div>
+      )}
+
+      <div class="nexus-hero__meta">
+        <span>Documentação técnica</span>
+        <span class="nexus-hero__meta-dot">·</span>
+        <span>CRM com IA</span>
+        <span class="nexus-hero__meta-dot">·</span>
+        <span>Ferramenta de engenharia interna</span>
+      </div>
+
+    </div>
+  </div>
+) : null}
+
+<style>
+  .nexus-hero {
+    position: relative;
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .nexus-hero__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 70% 60% at 50% 0%,
+      color-mix(in srgb, #3B82F6 14%, transparent) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  .nexus-hero__content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .nexus-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.875rem;
+    background-color: color-mix(in srgb, #3B82F6 10%, transparent);
+    border: 1px solid color-mix(in srgb, #3B82F6 25%, transparent);
+    border-radius: 100px;
+    font-size: 0.8125rem;
+    color: #93C5FD;
+    margin-bottom: 2rem;
+  }
+
+  .nexus-hero__badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #3B82F6;
+    box-shadow: 0 0 6px #3B82F6;
+  }
+
+  .nexus-hero__badge-version {
+    color: #A1A1AA;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+  }
+
+  .nexus-hero__title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #FAFAFA;
+    margin: 0 0 1.25rem;
+  }
+
+  .nexus-hero__tagline {
+    font-size: 1.125rem;
+    color: #A1A1AA;
+    line-height: 1.6;
+    margin: 0 auto 2.5rem;
+    max-width: 560px;
+  }
+
+  .nexus-hero__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .nexus-hero__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .nexus-hero__action--primary {
+    background-color: #3B82F6;
+    color: white;
+  }
+
+  .nexus-hero__action--primary:hover {
+    background-color: #2563EB;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px color-mix(in srgb, #3B82F6 35%, transparent);
+  }
+
+  .nexus-hero__action--secondary {
+    background-color: #18181B;
+    color: #FAFAFA;
+    border: 1px solid #27272A;
+  }
+
+  .nexus-hero__action--secondary:hover {
+    border-color: color-mix(in srgb, #3B82F6 40%, transparent);
+    text-decoration: none;
+  }
+
+  .nexus-hero__meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: #A1A1AA;
+    flex-wrap: wrap;
+  }
+
+  .nexus-hero__meta-dot {
+    color: #27272A;
+  }
+</style>

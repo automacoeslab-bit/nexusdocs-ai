@@ -19,6 +19,9 @@ export default defineConfig({
         './src/styles/global.css',
         './src/styles/custom.css',
       ],
+      components: {
+        Hero: './src/components/overrides/Hero.astro',
+      },
       sidebar: [
         { label: 'Visão Geral', link: '/visao-geral/' },
         { label: 'Arquitetura', link: '/arquitetura/' },
