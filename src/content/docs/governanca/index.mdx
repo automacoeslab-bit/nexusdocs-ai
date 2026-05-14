@@ -1,8 +1,50 @@
 ---
 title: Governança
-description: Em construção
+description: Políticas, segurança, compliance e SLAs do sistema
 ---
 
-# Governança
+import { Badge } from '@astrojs/starlight/components';
 
-Documentação em construção.
+# Governança <Badge text="Em construção" variant="caution" />
+
+---
+
+## Políticas de Segurança
+
+### Autenticação e Autorização
+
+_Documentação em breve._
+
+- JWT com expiração de 24h
+- RBAC: Admin, Gestor, Vendedor, Read-only
+- SSO via OAuth2 / SAML (planejado)
+
+---
+
+### Tratamento de Dados Pessoais (LGPD)
+
+_Documentação em breve._
+
+- Política de retenção de dados
+- Direito ao esquecimento
+- Logs de acesso a PII
+
+---
+
+## SLAs
+
+| Endpoint | Target P99 | Disponibilidade |
+|---------|-----------|-----------------|
+| API Gateway | menos de 200ms | 99.9% |
+| AI Engine (sync) | menos de 3s | 99.5% |
+| AI Engine (async) | menos de 30s | 99.0% |
+
+---
+
+## Incident Response
+
+_Documentação em breve._
+
+- Runbook de incidentes
+- Escalation path
+- Comunicação com stakeholders

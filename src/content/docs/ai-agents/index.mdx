@@ -1,8 +1,127 @@
 ---
 title: AI Agents
-description: Em construção
+description: Os agentes de IA que potencializam o CRM — capacidades, fluxos e decisões
 ---
 
-# AI Agents
+import { Badge } from '@astrojs/starlight/components';
+import MermaidDiagram from '../../../components/ui/MermaidDiagram.astro';
+import FeatureCard from '../../../components/ui/FeatureCard.astro';
 
-Documentação em construção.
+export const diagramCode = `flowchart TD
+    A[Novo Lead Criado] --> B{Lead Scorer}
+    B -->|Score maior que 70| C[Alta Prioridade\nNotifica vendedor]
+    B -->|Score 40 a 69| D[Média Prioridade\nFila normal]
+    B -->|Score menor que 40| E[Baixa Prioridade\nNurturing automático]
+    C --> F{Qualifier Agent}
+    D --> F
+    E --> G[Follow-up Agent\nsequência nurturing]
+    F -->|Qualificado| H[Oportunidade criada\nno pipeline]
+    F -->|Não qualificado| I[Lead descartado\ncom motivo registrado]
+    F -->|Sem resposta| J[Follow-up Agent\nreativação]
+    H --> K[Vendedor assume\ncom contexto completo]
+    J --> F
+    style A fill:#3B82F6,color:#fff,stroke:#1D4ED8
+    style H fill:#059669,color:#fff,stroke:#064E3B
+    style I fill:#DC2626,color:#fff,stroke:#7F1D1D`;
+
+# AI Agents <Badge text="Core System" variant="success" />
+
+O CRM opera com quatro agentes de IA especializados, cada um responsável por um domínio específico. São serviços independentes que se comunicam via API interna e compartilham contexto via PostgreSQL + pgvector.
+
+---
+
+## Os Quatro Agentes
+
+<div class="feature-grid">
+  <FeatureCard
+    icon="🎯"
+    title="Lead Scorer"
+    description="Analisa dados do lead (cargo, empresa, comportamento, interações) e gera um score de 0-100 com justificativa."
+    badge="Síncrono"
+  />
+  <FeatureCard
+    icon="🗣️"
+    title="Qualifier Agent"
+    description="Conduz qualificação automática via e-mail ou chat, usando framework BANT adaptado com linguagem natural."
+    badge="Assíncrono"
+  />
+  <FeatureCard
+    icon="📬"
+    title="Follow-up Agent"
+    description="Gera e agenda follow-ups personalizados com base no histórico de interações e stage do pipeline."
+    badge="Assíncrono"
+  />
+  <FeatureCard
+    icon="📡"
+    title="Sentiment Analyzer"
+    description="Analisa o tom de e-mails e mensagens recebidas, sinalizando leads em risco ou com alta intenção de compra."
+    badge="Batch"
+  />
+</div>
+
+<style>{`
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+`}</style>
+
+---
+
+## Fluxo de Orquestração
+
+<MermaidDiagram
+  code={diagramCode}
+  caption="Fluxo de orquestração dos AI Agents no pipeline de vendas"
+/>
+
+---
+
+## Contrato de API dos Agentes
+
+Todos os agentes expõem a mesma interface base:
+
+```http
+POST /agents/{agent-name}/run
+Authorization: Bearer {internal-token}
+Content-Type: application/json
+
+{
+  "lead_id": "uuid",
+  "context": {},
+  "options": {
+    "async": true,
+    "callback_url": "https://internal/webhook"
+  }
+}
+```
+
+**Resposta síncrona:**
+
+```json
+{
+  "run_id": "uuid",
+  "agent": "lead-scorer",
+  "status": "completed",
+  "result": {
+    "score": 84,
+    "reasoning": "Cargo C-level em empresa com 500+ funcionários...",
+    "confidence": 0.91
+  },
+  "duration_ms": 1240,
+  "model": "claude-sonnet-4-6",
+  "tokens_used": 847
+}
+```
+
+---
+
+## Princípios de Segurança dos Agentes
+
+**PII fora do contexto do LLM:** Nome, e-mail, telefone e outros dados pessoais são substituídos por tokens antes de qualquer chamada ao Claude. O modelo vê `[LEAD_001]`, não "João Silva".
+
+**Auditoria completa:** Todo run de agente é logado com: prompt enviado, resposta recebida, tokens usados, latência, modelo e versão. Retenção de 90 dias.
+
+**Rate limiting por lead:** Máximo de 10 chamadas de agente por lead por hora para evitar loops e custos descontrolados.

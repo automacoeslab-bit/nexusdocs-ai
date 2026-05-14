@@ -1,8 +1,47 @@
 ---
 title: Workflows
-description: Em construção
+description: Fluxos automatizados e integrações do CRM
 ---
 
-# Workflows
+import { Badge } from '@astrojs/starlight/components';
 
-Documentação em construção.
+# Workflows <Badge text="Em construção" variant="caution" />
+
+---
+
+## Workflow: Novo Lead Recebido
+
+**Trigger:** Lead criado via formulário, API ou integração
+
+**Duração estimada:** 30-60 segundos (scoring + qualificação inicial)
+
+1. Lead salvo no banco
+2. **Lead Scorer** executa (síncrono, aproximadamente 2s)
+3. Score registrado, prioridade atribuída
+4. Se score maior ou igual a 70 — vendedor notificado via Slack
+5. **Qualifier Agent** entra em fila (assíncrono)
+6. Primeiro e-mail de qualificação enviado em até 5 minutos
+
+---
+
+## Workflow: Follow-up Automático
+
+**Trigger:** Lead sem resposta por N dias (configurável por stage)
+
+_Documentação detalhada em breve._
+
+---
+
+## Workflow: Detecção de Risco
+
+**Trigger:** Sentiment Analyzer detecta tom negativo em comunicação
+
+**Ação:** Alerta imediato para vendedor e gestor
+
+_Documentação detalhada em breve._
+
+---
+
+## Como Criar um Workflow Customizado
+
+_Documentação em breve._

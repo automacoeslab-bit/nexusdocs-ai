@@ -1,8 +1,75 @@
 ---
 title: API Reference
-description: Em construção
+description: Endpoints, contratos e exemplos de integração
 ---
 
-# API Reference
+import { Badge } from '@astrojs/starlight/components';
 
-Documentação em construção.
+# API Reference <Badge text="v1.0" variant="note" />
+
+**Base URL:** `https://api.nexuscrm.internal/v1`
+
+**Autenticação:** `Authorization: Bearer {token}`
+
+---
+
+## Leads
+
+### GET /leads
+
+Lista leads com paginação e filtros.
+
+```http
+GET /leads?page=1&limit=20&score_min=70
+Authorization: Bearer {token}
+```
+
+**Resposta:**
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Empresa XYZ",
+      "score": 84,
+      "stage": "qualified",
+      "created_at": "2026-05-14T10:00:00Z"
+    }
+  ],
+  "pagination": { "page": 1, "total": 243, "limit": 20 }
+}
+```
+
+---
+
+### POST /leads
+
+Cria um novo lead.
+
+```http
+POST /leads
+Content-Type: application/json
+
+{
+  "company": "Empresa XYZ",
+  "contact_email": "contato@empresa.com",
+  "source": "linkedin"
+}
+```
+
+---
+
+## Agents
+
+### POST /agents/`{name}`/run
+
+Executa um agente manualmente. Consulte [AI Agents](/ai-agents/) para documentação completa.
+
+---
+
+## Webhooks
+
+_Documentação em breve._
+
+Eventos disponíveis: `lead.created`, `lead.scored`, `lead.stage_changed`, `opportunity.created`
