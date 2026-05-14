@@ -1,0 +1,126 @@
+# .github/workflows/deploy.yml
+#
+# NexusDocs AI — CI/CD Pipeline
+#
+# V1: Build + validação estrutural no push à main
+#
+# Para ativar deploy, descomente UMA das seções ao final:
+#   - GitHub Pages: descomente o job "deploy-pages"
+#   - Vercel:       descomente o job "deploy-vercel" + configure os secrets
+#
+name: CI — Build e Validação
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Validar estrutura de documentação
+        run: |
+          echo "Validando estrutura de documentação gerada..."
+          test -d dist                     || (echo "ERRO: dist/ não encontrado"              && exit 1)
+          test -f dist/index.html          || (echo "ERRO: index.html não gerado"             && exit 1)
+          test -d dist/visao-geral         || (echo "ERRO: /visao-geral não gerado"           && exit 1)
+          test -d dist/arquitetura         || (echo "ERRO: /arquitetura não gerado"           && exit 1)
+          test -d dist/ai-agents           || (echo "ERRO: /ai-agents não gerado"             && exit 1)
+          test -d dist/produto             || (echo "ERRO: /produto não gerado"               && exit 1)
+          test -d dist/governanca          || (echo "ERRO: /governanca não gerado"            && exit 1)
+          test -d dist/api-reference       || (echo "ERRO: /api-reference não gerado"         && exit 1)
+          test -d dist/workflows           || (echo "ERRO: /workflows não gerado"             && exit 1)
+          echo "Validação concluída — todas as páginas geradas com sucesso."
+
+      - name: Upload artefato do site
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexusdocs-ai-dist
+          path: dist/
+          retention-days: 7
+
+  # ============================================================
+  # DEPLOY — GitHub Pages
+  #
+  # Para ativar:
+  #   1. Descomente este job inteiro (remova os # de cada linha)
+  #   2. Em Settings > Pages do repositório, selecione "GitHub Actions" como source
+  #   3. Se o repositório não for o root do seu GitHub Pages, adicione em astro.config.mjs:
+  #      base: '/nexusdocs-ai/'
+  # ============================================================
+  #
+  # deploy-pages:
+  #   name: Deploy para GitHub Pages
+  #   needs: build
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     pages: write
+  #     id-token: write
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
+  #   steps:
+  #     - name: Download artefato
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: nexusdocs-ai-dist
+  #         path: dist/
+  #     - name: Setup Pages
+  #       uses: actions/configure-pages@v4
+  #     - name: Upload para Pages
+  #       uses: actions/upload-pages-artifact@v3
+  #       with:
+  #         path: dist/
+  #     - name: Deploy
+  #       id: deployment
+  #       uses: actions/deploy-pages@v4
+
+  # ============================================================
+  # DEPLOY — Vercel
+  #
+  # Para ativar:
+  #   1. Descomente este job inteiro
+  #   2. Execute localmente: npm install -g vercel && vercel link
+  #   3. Adicione os secrets no repositório GitHub:
+  #      VERCEL_TOKEN    → vercel.com/account/tokens
+  #      VERCEL_ORG_ID   → encontrado em .vercel/project.json após vercel link
+  #      VERCEL_PROJECT_ID → encontrado em .vercel/project.json após vercel link
+  # ============================================================
+  #
+  # deploy-vercel:
+  #   name: Deploy para Vercel
+  #   needs: build
+  #   if: github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20'
+  #         cache: 'npm'
+  #     - run: npm ci
+  #     - run: npm install -g vercel
+  #     - run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+  #     - run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+  #     - run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
