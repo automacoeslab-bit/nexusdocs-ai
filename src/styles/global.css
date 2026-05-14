@@ -1,28 +1,29 @@
 /* src/styles/global.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400..900;1,400..900&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @import "tailwindcss/utilities";
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans:     'Inter', sans-serif;
+  --font-display:  'Exo 2', sans-serif;
+  --font-mono:     'JetBrains Mono', monospace;
 
-  --color-bg:      #09090B;
-  --color-surface: #111115;
-  --color-card:    #18181B;
-  --color-border:  #27272A;
-  --color-text:    #FAFAFA;
-  --color-muted:   #A1A1AA;
-  --color-accent:  #3B82F6;
+  --color-bg:      #12170E;
+  --color-surface: #1C2118;
+  --color-card:    #252129;
+  --color-border:  #2E3B24;
+  --color-text:    #FFFFFF;
+  --color-muted:   #90A362;
+  --color-accent:  #7C8D52;
 }
 
 :root {
   color-scheme: dark;
-  --bg:      #09090B;
-  --surface: #111115;
-  --card:    #18181B;
-  --border:  #27272A;
-  --text:    #FAFAFA;
-  --muted:   #A1A1AA;
-  --accent:  #3B82F6;
+  --bg:      #12170E;
+  --surface: #1C2118;
+  --card:    #252129;
+  --border:  #2E3B24;
+  --text:    #FFFFFF;
+  --muted:   #90A362;
+  --accent:  #7C8D52;
 }

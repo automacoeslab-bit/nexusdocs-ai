@@ -2,41 +2,41 @@
 // ─────────────────────────────────────────────
 // PAINEL DE CONTROLE DA MARCA
 // Para trocar de cliente: edite apenas este arquivo
-// e substitua src/assets/brand/logo.svg pelo logo do cliente.
+// e substitua src/assets/brand/logo.png pelo logo do cliente.
 // ─────────────────────────────────────────────
 
 export const brand = {
   // Nome que aparece no header e na aba do browser
-  name: 'NexusDocs AI',
+  name: 'TomikCRM',
 
   // Subtítulo usado no Hero da homepage
-  tagline: 'Documentação viva para o CRM com Inteligência Artificial. Construída como produto de engenharia — versionada, automatizada, escalável.',
+  tagline: 'Documentação técnica do CRM com Inteligência Artificial. Operação comercial de ponta a ponta — agentes, automações e resultados rastreáveis.',
 
   // Descrição usada nos metadados (SEO, compartilhamento)
-  description: 'Documentação viva do CRM com IA — ferramenta de engenharia interna',
+  description: 'Documentação técnica do TomikCRM — CRM com IA de ponta a ponta',
 
   // Versão exibida no badge do Hero
-  version: 'v1.0',
+  version: 'v2026',
 
   // URL do repositório GitHub (ícone no header)
   github: 'https://github.com/automacoeslab-bit/nexusdocs-ai',
 
-  // Logo — coloque o arquivo SVG em src/assets/brand/logo.svg
+  // Logo — coloque o arquivo PNG em src/assets/brand/logo.png
   logo: {
-    src: './src/assets/brand/logo.svg',
-    alt: 'NexusDocs AI',
-    replacesTitle: false, // true = só logo, sem texto | false = logo + nome
+    src: './src/assets/brand/logo.png',
+    alt: 'TomikCRM',
+    replacesTitle: true, // logo já contém o nome da marca
   },
 
-  // Paleta de cores — dark mode premium
-  // Troque o `accent` para a cor principal do cliente (ex: '#10B981' para verde)
+  // Paleta de cores — identidade visual TomikCRM 2026
+  // Fonte: manual de marca (Sociedade das Marcas)
   colors: {
-    accent:  '#3B82F6', // azul elétrico — cor de destaque principal
-    bg:      '#09090B', // fundo da página
-    surface: '#111115', // sidebar, header
-    card:    '#18181B', // cards, code blocks
-    border:  '#27272A', // divisores, bordas
-    text:    '#FAFAFA', // texto principal
-    muted:   '#A1A1AA', // texto secundário, placeholders
+    accent:  '#7C8D52', // verde oliva — cor de destaque da marca
+    bg:      '#12170E', // verde escuro quase preto — fundo da página
+    surface: '#1C2118', // sidebar, header (entre bg e card)
+    card:    '#252129', // cards, code blocks (cinza-roxo escuro da marca)
+    border:  '#2E3B24', // divisores, bordas (+12.5% do verde escuro)
+    text:    '#FFFFFF', // texto principal
+    muted:   '#90A362', // texto secundário (+12.5% do accent)
   },
 } as const;

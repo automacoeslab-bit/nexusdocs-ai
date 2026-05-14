@@ -1,13 +1,13 @@
 /* src/styles/custom.css */
-/* Override Starlight CSS variables for NexusDocs AI premium dark theme */
+/* Override Starlight CSS variables for TomikCRM premium dark theme */
 
 /* Starlight theme variables — dark mode values applied globally */
 :root,
 [data-theme='dark'],
 [data-theme='light'] {
   --sl-color-accent:            var(--accent);
-  --sl-color-accent-high:       #60A5FA;
-  --sl-color-accent-low:        #1D4ED8;
+  --sl-color-accent-high:       #A0B478;
+  --sl-color-accent-low:        #4B603B;
   --sl-color-white:             var(--text);
   --sl-color-gray-1:            #E4E4E7;
   --sl-color-gray-2:            #D4D4D8;
@@ -23,6 +23,7 @@
   --sl-color-hairline:          var(--border);
   --sl-font:                    'Inter', sans-serif;
   --sl-font-mono:               'JetBrains Mono', monospace;
+  --sl-font-system:             'Inter', sans-serif;
   --sl-nav-height:              4rem;
   --sl-content-width:           52rem;
 }
@@ -75,11 +76,12 @@ pre {
   border-radius: 8px !important;
 }
 
-/* Headings */
+/* Headings — Exo 2 para identidade visual TomikCRM */
 .sl-markdown-content h1,
 .sl-markdown-content h2,
 .sl-markdown-content h3,
 .sl-markdown-content h4 {
+  font-family: 'Exo 2', sans-serif;
   color: var(--text);
   letter-spacing: -0.02em;
 }
