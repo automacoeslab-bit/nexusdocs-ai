@@ -1,59 +1,410 @@
 ---
-title: Visão Geral
-description: O que é o TomikCRM e como ele funciona
+title: Visão e Estratégia
+description: Missão, visão, pilares estratégicos, modelo de negócio, personas e roadmap do TomikCRM
 ---
 
-import { Badge } from '@astrojs/starlight/components';
+import { Badge, Aside } from '@astrojs/starlight/components';
 import FeatureCard from '../../../components/ui/FeatureCard.astro';
+import MermaidDiagram from '../../../components/ui/MermaidDiagram.astro';
 
-# Visão Geral <Badge text="v2026" variant="note" />
+# Visão e Estratégia <Badge text="v2026" variant="note" />
 
-**TomikCRM** é o sistema operacional comercial com inteligência artificial. Agentes e humanos atuam no mesmo fluxo, com contexto completo, histórico rastreável e API oficial do WhatsApp nativa.
+> **"Nos tornarmos a maior plataforma de Operação Comercial Autônoma do Brasil."**
 
----
-
-## O que é este sistema
-
-O CRM com IA é uma plataforma de gestão de relacionamento com clientes potencializada por agentes de IA especializados. Esses agentes operam em pipelines de vendas, qualificação de leads, análise de interações e automação de follow-ups.
-
-Esta documentação cobre:
-
-- **Arquitetura** — como os componentes se comunicam
-- **AI Agents** — quem são os agentes e o que fazem
-- **API Reference** — contratos e endpoints
-- **Workflows** — fluxos automatizados end-to-end
-- **Governança** — políticas, segurança e compliance
+Não estamos construindo mais um CRM. Estamos criando uma **nova categoria de software**: o **Sistema Comercial Autônomo** — uma plataforma onde negócios inteiros rodam sua operação comercial sem intervenção humana, usando agentes de IA que executam, aprendem e evoluem sozinhos.
 
 ---
 
-## Capacidades Principais
+## Missão
+
+Empoderar pequenas e médias empresas brasileiras a competir com grandes corporações, dando a elas acesso a operação comercial inteligente e autônoma — algo que antes exigia equipes enormes e orçamentos milionários.
+
+---
+
+## O que o TomikCRM não é
+
+| O que parece ser | O que realmente é |
+|---|---|
+| Um CRM tradicional | Um **Sistema Comercial Autônomo** com CRM embutido |
+| Uma ferramenta de automação | Uma **plataforma de agentes de IA** que trabalham por você |
+| Um chatbot builder | Um **orquestrador de operação comercial** multicanal |
+| Um dashboard de métricas | Um **sistema de observabilidade** com ação automática |
+
+---
+
+## Conceito Central
+
+Você define **o que** quer alcançar. Os agentes decidem **como** executar. O sistema mede os resultados e evolui automaticamente — sem intervenção humana.
+
+export const conceitoCentral = `
+flowchart TD
+    A["🎯 Usuário define\nO QUE quer alcançar\nmetas · KPIs · regras"]
+    B["🤖 Agentes decidem\nCOMO executar\nestratégias · canais · timing"]
+    C["📊 Sistema mede\nRESULTADOS\nmétricas · evolução · ajustes"]
+    D["🔄 Ciclo se repete\nEVOLUÇÃO AUTOMÁTICA\nAAES · A/B · otimização"]
+    A --> B --> C --> D --> A
+    style A fill:#2E3B24,color:#fff,stroke:#7C8D52
+    style B fill:#252129,color:#fff,stroke:#7C8D52
+    style C fill:#2E3B24,color:#fff,stroke:#7C8D52
+    style D fill:#252129,color:#fff,stroke:#7C8D52
+`;
+
+<MermaidDiagram code={conceitoCentral} />
+
+<Aside type="tip" title="Exemplo real">
+Uma clínica de estética configura: *"Quero 30 agendamentos por semana com ticket médio de R$500"*. O agente de follow-up identifica leads quentes, o agente de qualificação prioriza por probabilidade de conversão, o agente de agendamento envia mensagens no WhatsApp no horário ideal. Se a taxa de conversão cai, o AAES ajusta automaticamente.
+</Aside>
+
+---
+
+## Pilares Estratégicos
 
 <div class="feature-grid">
   <FeatureCard
     icon="🤖"
-    title="AI Agents Especializados"
-    description="Agentes de IA focados em tarefas específicas: qualificação, scoring, follow-up automático e análise de sentimento."
-    href="/ai-agents/"
+    title="Autonomia Total"
+    description="Agentes de IA que executam tarefas comerciais completas sem intervenção humana — follow-up, qualificação, agendamento e reativação 24/7."
     badge="Core"
   />
   <FeatureCard
+    icon="📡"
+    title="Multi-Channel"
+    description="WhatsApp-first com contexto unificado. O agente sabe tudo que o lead conversou em qualquer canal — WA, e-mail, Instagram, LiveChat."
+    badge="Core"
+  />
+  <FeatureCard
+    icon="🧬"
+    title="Inteligência Evolutiva (AAES)"
+    description="Auto Agent Evolution System — agentes que aprendem e evoluem automaticamente via A/B testing contínuo baseado em resultados reais."
+    badge="Diferencial"
+  />
+  <FeatureCard
     icon="📊"
-    title="Pipeline Inteligente"
-    description="Fluxo de vendas com scoring automático, priorização por IA e alertas de oportunidade em tempo real."
-    href="/workflows/"
+    title="Observabilidade Completa"
+    description="KPIs de negócio, métricas de agentes, audit trail de cada ação e alertas automáticos. Visibilidade total em todas as camadas da operação."
   />
   <FeatureCard
-    icon="🔌"
-    title="Integrações Nativas"
-    description="Conectores para e-mail, calendário, Slack, WhatsApp Business e ERPs via API padronizada."
-    href="/api-reference/"
-  />
-  <FeatureCard
-    icon="🔍"
-    title="Observabilidade Total"
-    description="Logs estruturados, traces de decisões de IA, métricas de performance e dashboards operacionais."
+    icon="🌐"
+    title="Open Source e Conhecimento"
+    description="Marketplace de pipelines e prompts, trilhas de conhecimento e comunidade de especialistas. O ecossistema evolui junto com a plataforma."
   />
 </div>
+
+### Como o AAES funciona
+
+export const aaesCode = `
+flowchart LR
+    EX["⚙️ Execução\nAgente executa com\nconfiguração atual"]
+    ME["📏 Medição\nSistema coleta\nmétricas da execução"]
+    AN["🔬 Análise\nCompara com baseline\ne alternativas (A/B)"]
+    AJ["⚡ Ajuste\nAplica mudanças\nautomaticamente"]
+    EX --> ME --> AN --> AJ --> EX
+    style EX fill:#2E3B24,color:#fff,stroke:#7C8D52
+    style ME fill:#252129,color:#fff,stroke:#7C8D52
+    style AN fill:#2E3B24,color:#fff,stroke:#7C8D52
+    style AJ fill:#252129,color:#fff,stroke:#7C8D52
+`;
+
+<MermaidDiagram code={aaesCode} />
+
+<Aside type="note" title="O usuário não precisa fazer nada">
+O agente de follow-up está usando um prompt com 15% de taxa de resposta. O AAES cria automaticamente 3 variantes, distribui o tráfego, mede resultados e migra para a variante vencedora. O ciclo recomeça com novas variantes da vencedora.
+</Aside>
+
+### Canais suportados
+
+| Canal | Status | Integração |
+|---|---|---|
+| WhatsApp | ✅ Ativo | Meta Cloud API (oficial) |
+| E-mail | 🔄 Em desenvolvimento | Resend API + React Email |
+| Instagram DM | 📅 Planejado | Meta Graph API |
+| LiveChat | 📅 Planejado | Widget embeddable |
+| SMS | 🗺️ Roadmap | Twilio / Vonage |
+| Telegram | 🗺️ Roadmap | Bot API |
+
+---
+
+## Proposta de Valor
+
+> **"Transforme sua operação comercial em uma máquina autônoma que vende, agenda e evolui 24/7 — sem depender de equipe humana."**
+
+### Por persona
+
+| Persona | Dor principal | O que o TomikCRM resolve |
+|---|---|---|
+| Dono de PME | "Perco vendas porque não consigo responder rápido" | Agentes respondem em \< 2min, 24/7, em qualquer canal |
+| Gestor de Vendas | "Não sei quais leads priorizar" | Scoring automático + pipeline visual com métricas em tempo real |
+| Marketing | "Campanhas não se conectam com vendas" | Multi-canal unificado: campanha → lead → follow-up → venda |
+| Operações | "Não temos visibilidade do que acontece" | Observabilidade completa: cada ação rastreada e mensurável |
+
+### Valor quantificável
+
+| Métrica | Sem TomikCRM | Com TomikCRM | Melhoria |
+|---|---|---|---|
+| Tempo de resposta ao lead | 4–24 horas | \< 2 minutos | 99%+ redução |
+| Leads que recebem follow-up | 30–40% | 100% | 2,5× mais |
+| Horas/semana em tarefas repetitivas | 15–20h | 0h (autônomo) | Eliminação |
+| Custo de equipe comercial junior | R$3–5k/mês | R$297/mês (plano) | 90% economia |
+
+---
+
+## Modelo de Negócio
+
+### Fontes de receita
+
+| Fonte | Modelo | Detalhes |
+|---|---|---|
+| **Assinatura (MRR)** | Planos mensais | Starter R$97 · Growth R$297 · Enterprise R$797 · Custom |
+| **Créditos de IA** | Usage-based | Cada ação de agente consome créditos — pacotes de 1K a 100K |
+| **Seats** | Per-user | R$29–49/usuário adicional além do plano |
+| **Marketplace** | Comissão | 20–30% sobre venda de templates, prompts e workflows |
+| **Serviços** | Add-ons | Onboarding assistido, consultoria, integração customizada |
+
+### Arquitetura Multi-Tenant
+
+export const multiTenantCode = `
+flowchart TD
+    subgraph MASTER["Master Supabase (Compartilhado)"]
+        AUTH[Autenticação]
+        BILLING[Billing / Stripe]
+        GOV[Governance\norganizações · planos · licenças]
+        PIPELINES[Agent Pipelines & Versions]
+        LOGS[Executions Log]
+    end
+    subgraph CLIENT["Client Supabase (Por organização)"]
+        HOSTED["Modo 1: tomik_hosted\nIsolamento via RLS + organization_id"]
+        BYO["Modo 2: BYO\nCliente traz sua própria instância"]
+        DATA[CRM · Appointments · Financeiro\nMensagens · Memória IA]
+    end
+    MASTER --> CLIENT
+    style MASTER fill:#1C2118,stroke:#7C8D52,color:#fff
+    style CLIENT fill:#252129,stroke:#7C8D52,color:#fff
+`;
+
+<MermaidDiagram code={multiTenantCode} />
+
+---
+
+## Personas
+
+### Carlos — Dono de Clínica de Estética
+
+| Atributo | Detalhe |
+|---|---|
+| Empresa | Clínica de estética, 3–10 funcionários |
+| Receita | R$50–200k/mês |
+| Dor principal | Perde 40% dos leads porque ninguém responde a tempo |
+| Meta | 30+ agendamentos/semana sem contratar mais recepcionista |
+
+> *"Antes eu pagava R$3.500/mês para uma recepcionista que só trabalhava em horário comercial. Agora meus leads são respondidos às 23h de domingo e eu acordo com agendamentos novos."*
+
+---
+
+### Renata — Gestora de Vendas B2B
+
+| Atributo | Detalhe |
+|---|---|
+| Empresa | Software/serviços, 20–50 funcionários |
+| Receita | R$200k–1M/mês |
+| Dor principal | Vendedores não fazem follow-up sistematicamente |
+| Meta | Aumentar conversão de 5% para 12% sem aumentar equipe |
+
+> *"Meus vendedores faziam follow-up em 30% dos leads. Agora 100% recebem follow-up e minha taxa de conversão triplicou."*
+
+---
+
+### Felipe — Analista de Marketing Digital
+
+| Atributo | Detalhe |
+|---|---|
+| Empresa | Agência ou marketing interno |
+| Dor principal | Campanhas geram leads que ninguém segue |
+| Meta | Conectar campanha → lead → venda com rastreabilidade total |
+
+> *"Finalmente consigo mostrar pro meu chefe que aquela campanha de R$5mil gerou R$47mil em vendas. Antes era 'achismo'."*
+
+---
+
+### Diego — Diretor de Operações
+
+| Atributo | Detalhe |
+|---|---|
+| Empresa | 50+ funcionários, múltiplas áreas |
+| Receita | R$500k–5M/mês |
+| Dor principal | Operação comercial é uma caixa-preta |
+| Meta | Visibilidade unificada + redução de custo operacional |
+
+---
+
+## Jornada do Lead: Do Clique à Venda
+
+export const jornadaCode = `
+flowchart TD
+    A[Campanha / Formulário] --> B[Webhook captura lead]
+    B --> C["🤖 Agente de Qualificação\nScore: 87/100"]
+    C --> D["Pipeline: Qualificado"]
+    D --> E["🤖 Agente de Follow-up\nWhatsApp automático"]
+    E --> F{Lead responde?}
+    F -->|Sim| G["🤖 Agente negocia\ncom contexto CRM"]
+    G --> H["Lead quer agendar"]
+    H --> I["🤖 Agente consulta agenda\nOferece 3 horários"]
+    I --> J["Agendamento criado\n+ confirmação enviada"]
+    J --> K["Consulta realizada"]
+    K --> L["Pagamento via gateway"]
+    L --> M["Pipeline: Convertido\n📊 AAES analisa e otimiza"]
+    F -->|Não responde| N["Sequência multi-canal\nE-mail, novo WA..."]
+    N --> F
+    style C fill:#252129,stroke:#7C8D52,color:#fff
+    style E fill:#252129,stroke:#7C8D52,color:#fff
+    style G fill:#252129,stroke:#7C8D52,color:#fff
+    style I fill:#252129,stroke:#7C8D52,color:#fff
+    style M fill:#2E3B24,stroke:#7C8D52,color:#fff
+`;
+
+<MermaidDiagram code={jornadaCode} />
+
+---
+
+## Features Core
+
+O TomikCRM possui 11 features core. Cada uma tem documentação técnica própria.
+
+| # | Feature | Descrição |
+|---|---|---|
+| 01 | **Comercial OS** | CRM Kanban + Agenda + Financeiro integrados |
+| 02 | **Agent Runtime** | Engine de execução de pipelines de IA |
+| 03 | **Agent Evolution (AAES)** | Auto-melhoria de agentes baseada em resultados |
+| 04 | **Crew Agents** | Orquestração multi-agente (CrewAI) |
+| 05 | **Follow-Up System** | Sequências automatizadas multicanal |
+| 06 | **Canais** | WhatsApp, E-mail, Instagram — inbox unificada |
+| 07 | **Payment Gateways** | 8 gateways de pagamento brasileiros |
+| 08 | **Observabilidade** | KPIs, OKRs, métricas de agentes, audit trail |
+| 09 | **Gatilhos** | Webhooks, automações, cron jobs, event triggers |
+| 10 | **LiveChat** | Chat em tempo real com handoff IA ↔ humano |
+| 11 | **Community** | Marketplace, trilhas, base de conhecimento |
+
+### Gateways de pagamento BR
+
+| Gateway | Tipo | Status |
+|---|---|---|
+| Asaas | Pagamentos recorrentes | ✅ Implementado |
+| Mercado Pago | Marketplace + pagamento | ✅ Implementado |
+| PicPay | Carteira digital | ✅ Implementado |
+| Kiwify | Infoprodutos | ✅ Implementado |
+| Ticto | Infoprodutos | ✅ Implementado |
+| Greenn | Infoprodutos | ✅ Implementado |
+| Vindi | Recorrência | ✅ Implementado |
+| Hotmart | Infoprodutos | 📅 Planejado |
+
+---
+
+## Posicionamento Competitivo
+
+### TomikCRM vs CRMs tradicionais
+
+| Aspecto | Pipedrive / HubSpot | TomikCRM |
+|---|---|---|
+| Filosofia | Ferramenta para humanos | Sistema autônomo com agentes IA |
+| Follow-up | Lembrete para o humano fazer | Agente executa automaticamente |
+| Qualificação | Regras estáticas | IA dinâmica com evolução (AAES) |
+| Canais | E-mail centric | WhatsApp-first + multicanal |
+| Agendamento | Link de agendamento (humano) | Agente negocia e agenda via chat |
+| Preço | US$49–99/user/mês | R$97–297/mês (BRL, nativo BR) |
+| Evolução | Manual (usuário otimiza) | Automática (AAES otimiza) |
+
+### TomikCRM vs Ferramentas de automação
+
+| Aspecto | N8N / Make / Zapier | TomikCRM |
+|---|---|---|
+| Foco | Automação genérica | Operação comercial específica |
+| Setup | Técnico (nodes, flows) | Wizard guiado, sem código |
+| IA | Integração manual com OpenAI | Agentes nativos com contexto CRM |
+| Observabilidade | Logs de execução | KPIs de negócio + métricas de agente |
+| Evolução | Estática (fluxo fixo) | Dinâmica (AAES evolui sozinho) |
+| CRM embutido | Não (precisa integrar) | Sim (Kanban + pipeline nativo) |
+
+<Aside type="caution" title="Vantagem de pioneiro">
+Não existe concorrente direto no Brasil que combine CRM + agentes IA autônomos + evolução automática + multicanal WhatsApp-first. O TomikCRM está criando a categoria **Operação Comercial Autônoma** antes que outros percebam que ela existe.
+</Aside>
+
+---
+
+## Roadmap
+
+export const roadmapCode = `
+timeline
+    title Roadmap TomikCRM
+    section Fase 1 — Fundação (2025–2026)
+        Concluído : CRM Kanban
+                  : Agenda e Financeiro
+                  : WhatsApp Meta Cloud API
+                  : Agent Runtime
+                  : 8 Gateways BR
+        Em andamento : Follow-up automatizado
+                     : AAES v1
+                     : Crew Agents
+    section Fase 2 — Canais (2026)
+        Planejado : E-mail OS
+                  : Instagram DM
+                  : LiveChat widget
+                  : SMS
+                  : Inbox unificada
+    section Fase 3 — Autonomia Total (2026–2027)
+        Futuro : AAES v3 contínuo
+               : Agente vendas end-to-end
+               : Agente de retenção
+               : Self-healing pipelines
+    section Fase 4 — Plataforma (2027+)
+        Futuro : Marketplace de agentes
+               : SDK para terceiros
+               : API pública
+               : Internacionalização LATAM
+`;
+
+<MermaidDiagram code={roadmapCode} />
+
+### Metas por fase
+
+| Fase | Métrica chave | Meta |
+|---|---|---|
+| Fundação | Organizações ativas | 500+ |
+| Expansão de Canais | Canais por organização (média) | 2,5+ |
+| Autonomia Total | % tarefas sem intervenção humana | 90%+ |
+| Plataforma Aberta | Itens no marketplace | 1.000+ |
+
+---
+
+## Glossário
+
+| Termo | Definição |
+|---|---|
+| **Agent** | Entidade de IA que executa tarefas comerciais autonomamente |
+| **Agent Runtime** | Engine que executa pipelines de agentes de IA |
+| **AAES** | Auto Agent Evolution System — evolui agentes automaticamente |
+| **BYO** | Bring Your Own — cliente traz sua própria instância Supabase |
+| **Crew** | Grupo de agentes que trabalham juntos em tarefa complexa (CrewAI) |
+| **Follow-up** | Sequência automatizada de mensagens para nutrição de leads |
+| **Gateway** | Integração com plataforma de pagamento (Asaas, Mercado Pago...) |
+| **Handoff** | Transferência de conversa de agente IA para humano (LiveChat) |
+| **Lead** | Contato potencial capturado via webhook, formulário ou manual |
+| **MCP** | Model Context Protocol — permite agentes acessarem ferramentas externas |
+| **MRR** | Monthly Recurring Revenue — receita recorrente mensal |
+| **Multi-tenant** | Múltiplas organizações compartilham infraestrutura com isolamento |
+| **Pipeline** | Funil de vendas Kanban OU sequência de execução de agente IA |
+| **RAG** | Retrieval-Augmented Generation — busca contexto antes de gerar resposta |
+| **RLS** | Row Level Security — isolamento de dados por organização no PostgreSQL |
+| **Scoring** | Pontuação automática de leads por probabilidade de conversão |
+| **Seat** | Licença de usuário — cada pessoa que acessa ocupa um seat |
+| **Template (Meta)** | Mensagem pré-aprovada pela Meta para WhatsApp fora da janela de 24h |
+| **tomik_hosted** | Modo onde o TomikCRM gerencia o Supabase do cliente |
+| **Tool (MCP)** | Função que um agente pode chamar para executar ações externas |
+| **Webhook** | Endpoint HTTP que recebe eventos externos e dispara ações |
+
+---
+
+<Aside type="note" title="Documento vivo">
+Última revisão: 2026-05-10 · Versão: 1.0 · Responsável: Time de Produto TomikCRM
+</Aside>
 
 <style>{`
   .feature-grid {
@@ -63,39 +414,3 @@ Esta documentação cobre:
     margin: 1.5rem 0;
   }
 `}</style>
-
----
-
-## Stack Tecnológica
-
-| Camada | Tecnologia | Papel |
-|--------|-----------|-------|
-| Frontend | React + Next.js | Interface do usuário CRM |
-| API Gateway | Node.js + Fastify | Roteamento e autenticação |
-| AI Engine | Python + LangChain | Orquestração de agentes |
-| LLM | Claude (Anthropic) | Reasoning e geração de texto |
-| Database | PostgreSQL + pgvector | Dados relacionais + embeddings |
-| Cache | Redis | Sessões e respostas de IA |
-| Infra | AWS ECS + RDS | Compute e persistência |
-| CI/CD | GitHub Actions | Pipeline de build e deploy |
-
----
-
-## Princípios de Design
-
-### Agentes como Serviços
-Cada agente de IA é um serviço independente com contrato de API bem definido. Pode ser atualizado, versionado e monitorado de forma isolada.
-
-### Decisões Rastreáveis
-Toda decisão tomada por IA é logada com contexto, prompt, resposta e metadados. Nenhuma "caixa preta" em produção.
-
-### Segurança por Design
-PII (Personally Identifiable Information) nunca passa pelo modelo de IA diretamente. Dados são anonimizados antes de qualquer chamada ao LLM.
-
----
-
-## Como Navegar Esta Documentação
-
-Comece pela [Arquitetura](/arquitetura/) para entender como os componentes se relacionam.  
-Em seguida, explore os [AI Agents](/ai-agents/) para entender as capacidades de IA.  
-Use a [API Reference](/api-reference/) como referência técnica durante o desenvolvimento.
