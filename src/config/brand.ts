@@ -21,9 +21,9 @@ export const brand = {
   // URL do repositório GitHub (ícone no header)
   github: 'https://github.com/automacoeslab-bit/nexusdocs-ai',
 
-  // Logo — coloque o arquivo PNG em src/assets/brand/logo.png
+  // Logo — coloque o arquivo PNG em public/logo-tomik.png
   logo: {
-    src: './src/assets/brand/logo.png',
+    src: '/logo-tomik.png',
     alt: 'TomikCRM',
     replacesTitle: true, // logo já contém o nome da marca
   },
