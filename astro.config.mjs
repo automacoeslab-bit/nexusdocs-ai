@@ -1,31 +1,36 @@
-// @ts-check
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-
 import tailwindcss from '@tailwindcss/vite';
 
-// https://astro.build/config
 export default defineConfig({
   integrations: [
-      starlight({
-          title: 'My Docs',
-          social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
-          sidebar: [
-              {
-                  label: 'Guides',
-                  items: [
-                      // Each item here is one entry in the navigation menu.
-                      { label: 'Example Guide', slug: 'guides/example' },
-                  ],
-              },
-              {
-                  label: 'Reference',
-                  items: [{ autogenerate: { directory: 'reference' } }],
-              },
+    starlight({
+      title: 'NexusDocs AI',
+      description: 'Documentação viva do CRM com IA — ferramenta de engenharia interna',
+      social: [
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/your-org/nexusdocs-ai' },
+      ],
+      customCss: [
+        './src/styles/global.css',
+        './src/styles/custom.css',
+      ],
+      sidebar: [
+        { label: 'Visão Geral', link: '/visao-geral/' },
+        { label: 'Arquitetura', link: '/arquitetura/' },
+        { label: 'AI Agents', link: '/ai-agents/' },
+        {
+          label: 'Produto',
+          items: [
+            { label: 'CRM', link: '/produto/' },
+            { label: 'Workflows', link: '/workflows/' },
           ],
-      }),
-	],
-
+        },
+        { label: 'Governança', link: '/governanca/' },
+        { label: 'API Reference', link: '/api-reference/' },
+      ],
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
