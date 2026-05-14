@@ -9,7 +9,7 @@ export default defineConfig({
       title: 'NexusDocs AI',
       description: 'Documentação viva do CRM com IA — ferramenta de engenharia interna',
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/your-org/nexusdocs-ai' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/automacoeslab-bit/nexusdocs-ai' },
       ],
       defaultLocale: 'root',
       locales: {
