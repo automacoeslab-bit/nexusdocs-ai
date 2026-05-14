@@ -11,7 +11,6 @@ export default defineConfig({
     starlight({
       title: brand.name,
       description: brand.description,
-      logo: brand.logo,
       defaultLocale: 'root',
       locales: {
         root: { label: 'Português', lang: 'pt-BR' },
@@ -43,6 +42,7 @@ export default defineConfig({
       ],
       components: {
         Hero: './src/components/overrides/Hero.astro',
+        SiteTitle: './src/components/overrides/SiteTitle.astro',
       },
       sidebar: [
         { label: 'Visão Geral', link: '/visao-geral/' },

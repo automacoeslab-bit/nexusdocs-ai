@@ -1,0 +1,28 @@
+---
+// src/components/overrides/SiteTitle.astro
+import { brand } from '../../config/brand.ts';
+---
+
+<a href="/" class="site-logo-link">
+  <img
+    src="/logo-tomik.png"
+    alt={brand.logo.alt}
+    class="site-logo"
+    width="160"
+    height="40"
+  />
+</a>
+
+<style>
+  .site-logo-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .site-logo {
+    height: 32px;
+    width: auto;
+    display: block;
+  }
+</style>
