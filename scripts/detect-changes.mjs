@@ -79,7 +79,7 @@ export function detectChanges(docsNotionPath) {
 
   // Detectar adicionados e alterados
   for (const relPath of mdFiles) {
-    const absPath = join(docsNotionPath, relPath.replace(/\//g, '\\'))
+    const absPath = join(docsNotionPath, relPath)
     const stat = statSync(absPath)
     const mtime = stat.mtimeMs
 
@@ -94,7 +94,7 @@ export function detectChanges(docsNotionPath) {
   }
 
   for (const relPath of assetFiles) {
-    const absPath = join(docsNotionPath, relPath.replace(/\//g, '\\'))
+    const absPath = join(docsNotionPath, relPath)
     const stat = statSync(absPath)
     const mtime = stat.mtimeMs
 

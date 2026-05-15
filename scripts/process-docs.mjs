@@ -59,7 +59,7 @@ function validateMarkdown(content, sourceModulePath, filename, log) {
   // Referências a diags/ que não existem na fonte
   const diagRefs = [...content.matchAll(/\(diags\/([^)]+)\)/g)]
   for (const [, diagFile] of diagRefs) {
-    const diagPath = join(sourceModulePath, 'diags', diagFile.replace(/\//g, '\\'))
+    const diagPath = join(sourceModulePath, 'diags', diagFile)
     if (!existsSync(diagPath)) {
       warnings.push(`imagem referenciada não encontrada: diags/${diagFile}`)
     }
@@ -68,7 +68,7 @@ function validateMarkdown(content, sourceModulePath, filename, log) {
   // Referências a imagens na raiz do módulo
   const imgRefs = [...content.matchAll(/\((?!https?:\/\/|\/|diags\/)([^)]+\.(png|jpg|jpeg|gif|webp|svg))\)/gi)]
   for (const [, imgFile] of imgRefs) {
-    const imgPath = join(sourceModulePath, imgFile.replace(/\//g, '\\'))
+    const imgPath = join(sourceModulePath, imgFile)
     if (!existsSync(imgPath)) {
       warnings.push(`imagem referenciada não encontrada: ${imgFile}`)
     }
