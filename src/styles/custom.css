@@ -1,6 +1,6 @@
 /* src/styles/custom.css */
 /* TomikCRM — Premium Dark Theme for Starlight */
-/* Options A + D: CSS-only visual upgrade */
+/* Options A + D + Sidebar Icons + Hero support */
 
 /* ─────────────────────────────────────────────
    0. STARLIGHT CSS VARIABLE OVERRIDES
@@ -37,7 +37,7 @@
 }
 
 /* ─────────────────────────────────────────────
-   1. GLOBAL BODY & TYPOGRAPHY (Option D)
+   1. GLOBAL BODY & TYPOGRAPHY
    ───────────────────────────────────────────── */
 
 body {
@@ -47,7 +47,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* More generous content area */
 .content-panel main {
   background-color: var(--bg);
 }
@@ -58,7 +57,6 @@ body {
   letter-spacing: 0.005em;
 }
 
-/* More vertical breathing room between sections (Option D) */
 .sl-markdown-content > * + * {
   margin-top: 1.5rem;
 }
@@ -80,14 +78,13 @@ body {
   margin-top: 2rem;
 }
 
-/* Paragraph spacing */
 .sl-markdown-content p {
   margin-bottom: 1.25rem;
   color: rgba(255, 255, 255, 0.92);
 }
 
 /* ─────────────────────────────────────────────
-   2. HEADINGS — Accent Underline System (Option A)
+   2. HEADINGS — Accent Underline System
    ───────────────────────────────────────────── */
 
 .sl-markdown-content h1,
@@ -100,7 +97,6 @@ body {
   font-weight: 700;
 }
 
-/* H1 — Hero-level, accent color */
 .sl-markdown-content h1 {
   font-size: 2.25rem;
   line-height: 1.2;
@@ -110,7 +106,6 @@ body {
   border-bottom: 3px solid var(--accent);
 }
 
-/* H2 — Section divider with gradient accent bar */
 .sl-markdown-content h2 {
   font-size: 1.65rem;
   line-height: 1.3;
@@ -119,7 +114,6 @@ body {
   border-image: linear-gradient(90deg, var(--accent) 0%, transparent 70%) 1;
 }
 
-/* H3 — Left accent bar */
 .sl-markdown-content h3 {
   font-size: 1.3rem;
   line-height: 1.35;
@@ -127,7 +121,6 @@ body {
   border-left: 3px solid var(--accent);
 }
 
-/* H4 — Subtle, muted accent */
 .sl-markdown-content h4 {
   font-size: 1.1rem;
   line-height: 1.4;
@@ -138,7 +131,7 @@ body {
 }
 
 /* ─────────────────────────────────────────────
-   3. TABLES — Premium Striped (Option A)
+   3. TABLES — Premium Striped
    ───────────────────────────────────────────── */
 
 .sl-markdown-content table {
@@ -179,69 +172,139 @@ body {
   transition: background-color 0.15s ease;
 }
 
-/* Striped rows */
 .sl-markdown-content tr:nth-child(even) td {
   background-color: rgba(28, 33, 24, 0.5);
 }
 
-/* Hover */
 .sl-markdown-content tr:hover td {
   background-color: rgba(124, 141, 82, 0.1);
 }
 
-/* Remove bottom border on last row */
 .sl-markdown-content tr:last-child td {
   border-bottom: none;
 }
 
 /* ─────────────────────────────────────────────
-   4. SIDEBAR — Active Indicator & Polish (Option A)
+   4. SIDEBAR — Premium with Dots & Separators
    ───────────────────────────────────────────── */
 
 .sidebar-pane {
   border-right: 1px solid var(--border);
 }
 
+/* ── Sidebar Links ── */
 .sidebar-content a {
   color: var(--muted);
-  font-size: 0.9rem;
-  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  padding: 0.45rem 0.75rem 0.45rem 1.5rem;
   border-radius: 6px;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   position: relative;
+  line-height: 1.4;
+}
+
+/* Dot indicator before each link */
+.sidebar-content a::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--border);
+  transition: all 0.2s ease;
 }
 
 .sidebar-content a:hover {
   color: var(--text);
   background-color: rgba(124, 141, 82, 0.08);
+  padding-left: 1.75rem;
 }
 
-/* Active page — accent left bar + background glow */
+.sidebar-content a:hover::before {
+  background-color: var(--accent);
+  box-shadow: 0 0 6px rgba(124, 141, 82, 0.4);
+}
+
+/* Active page — accent left bar + glow dot */
 .sidebar-content a[aria-current='page'] {
   color: var(--text);
   background-color: rgba(124, 141, 82, 0.12);
   font-weight: 600;
   box-shadow: inset 3px 0 0 var(--accent);
+  padding-left: 1.75rem;
 }
 
-/* Group titles in sidebar */
+.sidebar-content a[aria-current='page']::before {
+  background-color: var(--accent);
+  box-shadow: 0 0 8px rgba(124, 141, 82, 0.5);
+  width: 5px;
+  height: 5px;
+}
+
+/* ── Group Headers — accent bar + Exo 2 ── */
 .sidebar-content summary,
 .sidebar-content .group-label {
   font-family: 'Exo 2', sans-serif;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--sl-color-accent-high);
-  padding: 0.5rem 0.75rem;
-  margin-top: 1rem;
+  padding: 0.625rem 0.75rem 0.375rem;
+  margin-top: 0.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Visual separator between groups */
+.sidebar-content details + details,
+.sidebar-content li + li > details,
+.sidebar-content .top-level + .top-level {
+  border-top: 1px solid var(--border);
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+}
+
+/* Accent bar on group header */
+.sidebar-content summary::before,
+.sidebar-content .group-label::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--sl-color-accent-high));
+  flex-shrink: 0;
+}
+
+/* Chevron color */
+.sidebar-content summary::marker,
+.sidebar-content summary::-webkit-details-marker {
+  color: var(--muted);
+}
+
+/* Sidebar scrollbar — minimal */
+.sidebar-pane::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-pane::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-pane::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
 }
 
 /* ─────────────────────────────────────────────
-   5. HEADER — Refined (Option A)
+   5. HEADER — Refined
    ───────────────────────────────────────────── */
 
 header.header {
@@ -252,7 +315,6 @@ header.header {
   box-shadow: 0 1px 0 rgba(124, 141, 82, 0.15);
 }
 
-/* Subtle accent line at very top of page */
 header.header::before {
   content: '';
   position: absolute;
@@ -265,10 +327,9 @@ header.header::before {
 }
 
 /* ─────────────────────────────────────────────
-   6. CODE — Blocks & Inline (Option A)
+   6. CODE — Blocks & Inline
    ───────────────────────────────────────────── */
 
-/* Inline code */
 :not(pre) > code {
   background-color: var(--card) !important;
   border: 1px solid var(--border) !important;
@@ -279,7 +340,6 @@ header.header::before {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Code blocks */
 pre {
   background-color: var(--card) !important;
   border: 1px solid var(--border) !important;
@@ -288,14 +348,13 @@ pre {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Code block header (file name bar) */
 .expressive-code .frame .header {
   border-bottom: 1px solid var(--border);
   background-color: rgba(28, 33, 24, 0.6);
 }
 
 /* ─────────────────────────────────────────────
-   7. MERMAID DIAGRAMS — Premium Frame (Option A)
+   7. MERMAID DIAGRAMS — Premium Frame
    ───────────────────────────────────────────── */
 
 .sl-markdown-content .mermaid,
@@ -309,10 +368,9 @@ pre {
 }
 
 /* ─────────────────────────────────────────────
-   8. ASIDE / CALLOUTS — Accent Bar (Option D)
+   8. ASIDE / CALLOUTS — Accent Bar
    ───────────────────────────────────────────── */
 
-/* Starlight <Aside> components */
 .starlight-aside {
   border-radius: 8px;
   border-left-width: 4px;
@@ -321,31 +379,26 @@ pre {
   background-color: rgba(28, 33, 24, 0.5);
 }
 
-/* Note aside — brand accent */
 .starlight-aside--note {
   border-left-color: var(--accent);
   background-color: rgba(124, 141, 82, 0.06);
 }
 
-/* Tip aside */
 .starlight-aside--tip {
   border-left-color: var(--sl-color-accent-high);
   background-color: rgba(160, 180, 120, 0.06);
 }
 
-/* Caution aside */
 .starlight-aside--caution {
   border-left-color: #D4A843;
   background-color: rgba(212, 168, 67, 0.06);
 }
 
-/* Danger aside */
 .starlight-aside--danger {
   border-left-color: #C25450;
   background-color: rgba(194, 84, 80, 0.06);
 }
 
-/* Aside titles */
 .starlight-aside__title {
   font-family: 'Exo 2', sans-serif;
   font-weight: 700;
@@ -355,13 +408,12 @@ pre {
   margin-bottom: 0.5rem;
 }
 
-/* Aside icon */
 .starlight-aside__icon {
   flex-shrink: 0;
 }
 
 /* ─────────────────────────────────────────────
-   9. HORIZONTAL RULE — Gradient Divider (Option D)
+   9. HORIZONTAL RULE — Gradient Divider
    ───────────────────────────────────────────── */
 
 .sl-markdown-content hr {
@@ -380,7 +432,7 @@ pre {
 }
 
 /* ─────────────────────────────────────────────
-   10. LINKS — Content Area (Option A)
+   10. LINKS — Content Area
    ───────────────────────────────────────────── */
 
 .sl-markdown-content a {
@@ -396,7 +448,7 @@ pre {
 }
 
 /* ─────────────────────────────────────────────
-   11. LISTS — Better Readability (Option D)
+   11. LISTS — Better Readability
    ───────────────────────────────────────────── */
 
 .sl-markdown-content ul,
@@ -419,7 +471,6 @@ pre {
   font-weight: 600;
 }
 
-/* Nested lists */
 .sl-markdown-content li > ul,
 .sl-markdown-content li > ol {
   margin-top: 0.5rem;
@@ -427,7 +478,7 @@ pre {
 }
 
 /* ─────────────────────────────────────────────
-   12. BLOCKQUOTES — Styled (Option D)
+   12. BLOCKQUOTES — Styled
    ───────────────────────────────────────────── */
 
 .sl-markdown-content blockquote {
@@ -480,7 +531,7 @@ starlight-toc a[aria-current='true'] {
 }
 
 /* ─────────────────────────────────────────────
-   15. IMAGES & FIGURES (Option D)
+   15. IMAGES & FIGURES
    ───────────────────────────────────────────── */
 
 .sl-markdown-content img {
@@ -511,7 +562,6 @@ starlight-toc a[aria-current='true'] {
   background: var(--accent);
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) var(--bg);
@@ -534,6 +584,6 @@ starlight-toc a[aria-current='true'] {
   .sidebar-content a,
   .sl-markdown-content a,
   starlight-toc a {
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, padding 0.15s ease;
   }
 }
