@@ -87,45 +87,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     justify-content: center;
   }
 
-  /* ── Animated Grid Pattern ── */
+  /* ── Hexagonal Honeycomb Pattern ── */
   .nexus-hero__grid {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(124, 141, 82, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(124, 141, 82, 0.08) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 20%, transparent 70%);
-    animation: gridPulse 8s ease-in-out infinite;
+    /* SVG honeycomb — stroke-only hexagons */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='rgba(124,141,82,0.10)' stroke-width='0.8'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='rgba(124,141,82,0.06)' stroke-width='0.5'/%3E%3C/svg%3E");
+    background-size: 56px 100px;
+    /* Mask starts lower — creates the "cut" effect below the header */
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0,0,0,0.3) 15%,
+      black 35%,
+      black 65%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0,0,0,0.3) 15%,
+      black 35%,
+      black 65%,
+      transparent 100%
+    );
+    animation: gridPulse 10s ease-in-out infinite;
   }
 
   @keyframes gridPulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.9; }
   }
 
-  /* ── Primary Glow — green, top center ── */
+  /* ── Primary Glow — green, centered lower (not from top edge) ── */
   .nexus-hero__glow {
     position: absolute;
     inset: 0;
     background: radial-gradient(
-      ellipse 60% 50% at 50% 0%,
-      rgba(124, 141, 82, 0.2) 0%,
-      rgba(124, 141, 82, 0.08) 30%,
+      ellipse 70% 60% at 50% 45%,
+      rgba(124, 141, 82, 0.22) 0%,
+      rgba(124, 141, 82, 0.08) 35%,
       transparent 65%
     );
     pointer-events: none;
   }
 
-  /* ── Secondary Glow — purple accent from #252129, subtle ── */
+  /* ── Secondary Glow — purple accent from #252129 ── */
   .nexus-hero__glow-secondary {
     position: absolute;
     inset: 0;
     background: radial-gradient(
-      ellipse 40% 40% at 75% 20%,
-      rgba(37, 33, 41, 0.4) 0%,
-      transparent 60%
+      ellipse 50% 50% at 80% 30%,
+      rgba(37, 33, 41, 0.35) 0%,
+      transparent 55%
     );
     pointer-events: none;
   }
@@ -204,7 +218,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     left: 0;
     right: 0;
     height: 80px;
-    background: linear-gradient(to bottom, transparent, var(--bg));
+    background: linear-gradient(to bottom, transparent, #12170E);
     pointer-events: none;
   }
 
@@ -357,7 +371,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
 
     .nexus-hero__grid {
-      background-size: 32px 32px;
+      background-size: 42px 75px;
     }
 
     .nexus-hero__actions {
