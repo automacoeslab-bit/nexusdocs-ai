@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 import { brand } from './src/config/brand.ts';
 import { readFileSync, existsSync } from 'fs';
 
-const base = process.env.ASTRO_BASE_PATH ?? '/nexusdocs-ai'
-const site = process.env.ASTRO_SITE_URL || 'https://automacoeslab-bit.github.io'
+const base = (process.env.ASTRO_BASE_PATH ?? '/nexusdocs-ai').replace(/\/$/, '')
+const site = process.env.ASTRO_SITE_URL ?? 'https://automacoeslab-bit.github.io'
 
 const { colors } = brand;
 
