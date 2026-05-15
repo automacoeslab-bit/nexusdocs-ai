@@ -211,6 +211,9 @@ body {
   gap: 0.5rem;
   position: relative;
   line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
 }
 
 /* Dot indicator before each link */
