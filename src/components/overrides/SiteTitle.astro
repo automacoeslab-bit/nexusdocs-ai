@@ -1,11 +1,12 @@
 ---
 // src/components/overrides/SiteTitle.astro
 import { brand } from '../../config/brand.ts';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<a href="/" class="site-logo-link">
+<a href={`${base}/`} class="site-logo-link">
   <img
-    src="/logo-tomik.png"
+    src={`${base}/logo-tomik.png`}
     alt={brand.logo.alt}
     class="site-logo"
     width="160"
