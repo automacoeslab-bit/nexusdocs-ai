@@ -59,6 +59,7 @@ jobs:
       - name: Criar .env para o pipeline
         run: |
           echo "DOCS_NOTION_PATH=${{ github.workspace }}/docs-notion-src" > .env
+          echo "SITE_BASE=/nexusdocs-ai" >> .env
 
       - name: Sincronizar docs
         run: node --env-file=.env scripts/sync-docs.mjs

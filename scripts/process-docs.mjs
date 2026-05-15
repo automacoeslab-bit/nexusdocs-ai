@@ -7,6 +7,7 @@ import { join, dirname, basename, extname } from 'path'
 import { fileURLToPath } from 'url'
 
 const normalizePath = (p) => p.replace(/\\/g, '/')
+const siteBase = (process.env.SITE_BASE || '').replace(/\/$/, '')
 
 // ── Utilitários ──────────────────────────────────────────────────────────────
 
@@ -84,15 +85,15 @@ function validateMarkdown(content, sourceModulePath, filename, log) {
 // ── TRANSFORM: reescrita de paths ────────────────────────────────────────────
 
 function rewriteAssetPaths(content, slug) {
-  // diags/foo.svg → /modules/visao-estrategia/diags/foo.svg
+  // diags/foo.svg → {siteBase}/modules/visao-estrategia/diags/foo.svg
   content = content.replace(
     /(!?\[[^\]]*\])\((diags\/[^)]+)\)/g,
-    (_, prefix, path) => `${prefix}(/modules/${slug}/${assetPath(path)})`
+    (_, prefix, path) => `${prefix}(${siteBase}/modules/${slug}/${assetPath(path)})`
   )
-  // image.png → /modules/visao-estrategia/image.png (refs relativas na raiz)
+  // image.png → {siteBase}/modules/visao-estrategia/image.png
   content = content.replace(
     /(!?\[[^\]]*\])\(((?!https?:\/\/|\/|diags\/)([^)]+\.(png|jpg|jpeg|gif|webp|svg)))\)/gi,
-    (_, prefix, path) => `${prefix}(/modules/${slug}/${assetPath(path)})`
+    (_, prefix, path) => `${prefix}(${siteBase}/modules/${slug}/${assetPath(path)})`
   )
   return content
 }
