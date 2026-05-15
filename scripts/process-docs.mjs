@@ -115,7 +115,33 @@ function processMarkdownFile(relPath, docsNotionPath, dryRun, verbose, log) {
 
   validateMarkdown(content, sourceModulePath, filename, log)
 
-  const transformed = rewriteAssetPaths(content, slug)
+  let transformed = rewriteAssetPaths(content, slug)
+
+  // Injetar frontmatter com title se ausente (Starlight exige)
+  if (!fm.title) {
+    const h1 = content.match(/^#\s+(.+)$/m)
+    let title = filename.replace(/-notion\.md$/, '').replace(/-/g, ' ')
+    if (h1) {
+      let label = h1[1]
+      const emDashIdx = label.indexOf('—')
+      if (emDashIdx !== -1) {
+        label = label.slice(emDashIdx + 1).trim()
+      } else {
+        label = label.replace(/^[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\s]+/gu, '').trim()
+      }
+      if (label.length > 0) title = label
+    }
+    // Escapar aspas no title
+    title = title.replace(/"/g, '\\"')
+    const hasFrontmatter = transformed.trimStart().startsWith('---')
+    if (hasFrontmatter) {
+      // Inserir title no frontmatter existente
+      transformed = transformed.replace(/^---\n/, `---\ntitle: "${title}"\n`)
+    } else {
+      // Criar frontmatter do zero
+      transformed = `---\ntitle: "${title}"\n---\n\n${transformed}`
+    }
+  }
 
   if (verbose) console.log(`[process] ${relPath} → ${normalizePath(destPath)}`)
 
