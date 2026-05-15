@@ -114,7 +114,7 @@ export function generateSidebar(docsNotionPath, verbose = false) {
       const mdPath = join(generatedModulePath, mdFile)
       const content = readFileSync(mdPath, 'utf-8')
       const pageLabel = extractPageLabel(content, mdFile.replace('.md', ''))
-      const link = `/generated/${slug}/${mdFile.replace('.md', '')}`
+      const link = `/generated/${slug}/${mdFile.replace('.md', '').toLowerCase()}`
       items.push({ label: pageLabel, link })
     }
 

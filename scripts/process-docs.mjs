@@ -19,7 +19,7 @@ function moduleSlug(moduleName) {
 }
 
 function destFilename(notionFilename) {
-  return notionFilename.replace(/-notion\.md$/, '.md')
+  return notionFilename.replace(/-notion\.md$/, '.md').toLowerCase()
 }
 
 function assetPath(file, _options = { fingerprint: false }) {
