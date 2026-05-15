@@ -17,7 +17,7 @@ O seu time de conteúdo nunca precisa tocar no código deste repositório.
 ## Como funciona
 
 ```
-Repositório de conteúdo (docs-notion)
+Repositório de conteúdo (seus arquivos Markdown)
     │
     └─→ Push de qualquer arquivo
             │
