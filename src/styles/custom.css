@@ -103,7 +103,14 @@ body {
   color: var(--text);
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
-  border-bottom: 3px solid var(--accent);
+}
+
+.sl-markdown-content h1::after {
+  content: '';
+  display: block;
+  height: 3px;
+  background-color: var(--accent);
+  margin-top: 1rem;
 }
 
 .sl-markdown-content h2 {
