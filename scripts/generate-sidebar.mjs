@@ -31,6 +31,30 @@ function extractPageLabel(content, filename) {
     .replace(/\b\w/g, c => c.toUpperCase())
 }
 
+// Extrai label do H1 do primeiro arquivo -notion.md do módulo
+function extractModuleLabelFromSource(docsNotionPath, moduleName) {
+  const modPath = join(docsNotionPath, moduleName)
+  if (!existsSync(modPath)) return null
+  const files = readdirSync(modPath)
+    .filter(f => f.endsWith('-notion.md'))
+    .sort()
+  if (files.length === 0) return null
+  try {
+    const content = readFileSync(join(modPath, files[0]), 'utf-8')
+    const h1 = content.match(/^#\s+(.+)$/m)
+    if (!h1) return null
+    let label = h1[1]
+    // Remove emojis
+    label = label.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}]/gu, '').trim()
+    // Se tiver " — ", pega o que vem depois (remove prefixo tipo "TomikCRM — ")
+    const dashIdx = label.indexOf('—')
+    if (dashIdx !== -1) label = label.slice(dashIdx + 1).trim()
+    return label.length > 0 ? label : null
+  } catch {
+    return null
+  }
+}
+
 // Lê module.json se existir no docs-notion
 function readModuleJson(docsNotionPath, moduleName) {
   const modulePath = join(docsNotionPath, moduleName, 'module.json')
@@ -94,7 +118,7 @@ export function generateSidebar(docsNotionPath, verbose = false) {
     const fromJson = readModuleJson(docsNotionPath, moduleName)
     const fromTs = moduleConfig[moduleName] || {}
 
-    const label = fromTs.label || fromJson.label || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    const label = fromTs.label || fromJson.label || extractModuleLabelFromSource(docsNotionPath, moduleName) || slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
     const order = fromTs.order ?? fromJson.order ?? 99
     const icon = fromTs.icon || fromJson.icon || null
     const hidden = fromTs.hidden ?? fromJson.hidden ?? false
