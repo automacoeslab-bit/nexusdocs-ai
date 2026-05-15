@@ -356,6 +356,110 @@ O `--pull` flag, o lockfile e os logs persistentes já estão preparados para es
 
 ---
 
+## Pipeline stages explícitos
+
+O pipeline é formalmente dividido em seis estágios sequenciais. Cada script pertence a um estágio. Isso permite auditoria, logs granulares e extensão futura sem reescrever o orquestrador.
+
+```
+INGEST      git pull + leitura de arquivos do docs-notion         (sync-docs.mjs)
+    ↓
+NORMALIZE   normalização de paths, extração de frontmatter        (process-docs.mjs)
+    ↓
+VALIDATE    frontmatter, links, imagens, headings — não-bloqueante (process-docs.mjs)
+    ↓
+TRANSFORM   reescrita de paths relativos, cópia para destino      (process-docs.mjs)
+    ↓
+GENERATE    sidebar JSON, search index futuro                     (generate-sidebar.mjs)
+    ↓
+PUBLISH     astro build / hot-reload do dev server                (astro)
+```
+
+---
+
+## Manifest por módulo (`module.json`) — V1 opcional, V2 padrão
+
+Cada módulo no `docs-notion` pode ter um arquivo `module.json` opcional na raiz da pasta:
+
+```json
+{
+  "label": "Arquitetura",
+  "icon": "blocks",
+  "order": 2,
+  "hidden": false,
+  "category": "engineering"
+}
+```
+
+**Prioridade de resolução do label/order:**
+1. `module.json` no docs-notion (mais próximo do conteúdo)
+2. `src/config/modules.ts` no NexusDocs (override de apresentação)
+3. Auto-gerado a partir do slug (fallback)
+
+Na V1, o `generate-sidebar.mjs` lê o `module.json` se existir. O `modules.ts` continua funcionando como override opcional. Na V2, o `module.json` se torna o padrão e o `modules.ts` fica reservado para overrides específicos de apresentação (ícone, agrupamento visual).
+
+---
+
+## IDs estáveis de páginas — V1 suportado
+
+Para evitar que renomear um arquivo quebre URLs, links e histórico, o pipeline extrai o `id` do frontmatter YAML de cada página:
+
+```markdown
+---
+id: missao-visao
+title: Missão e Visão
+---
+```
+
+**Comportamento:**
+- Se `id` presente no frontmatter → URL usa o `id`: `/generated/visao-estrategia/missao-visao`
+- Se ausente → URL usa o filename sem número prefixo: `01-MISSAO-VISAO.md` → `/generated/visao-estrategia/01-MISSAO-VISAO`
+
+O `process-docs.mjs` extrai frontmatter com regex simples (sem dependência) e registra o `id` no `last-sync.json` para que o `generate-sidebar.mjs` use ao gerar links.
+
+---
+
+## Search index pré-gerado — V2
+
+Estrutura reservada para implementação futura:
+
+```json
+// cache/search-index.json
+[
+  {
+    "id": "missao-visao",
+    "module": "visao-estrategia",
+    "title": "Missão e Visão",
+    "headings": ["Visão", "Missão", "O que não é", "Conceito Central"],
+    "summary": "Primeira frase do conteúdo...",
+    "keywords": []
+  }
+]
+```
+
+Permite plugar busca semântica local ou IA sem reprocessar markdown. O `process-docs.mjs` já deve emitir metadados estruturados por arquivo para que o search index possa ser gerado sem reler os arquivos.
+
+---
+
+## Visão de longo prazo
+
+```
+ClickUp
+   ↓
+docs-notion          (CMS Git-based — equipe edita aqui)
+   ↓
+NexusDocs Pipeline   (INGEST → NORMALIZE → VALIDATE → TRANSFORM → GENERATE → PUBLISH)
+   ↓
+Portal de docs vivo  (Starlight — apresentação)
+   ↓
+cache/search-index   (metadados estruturados de toda a documentação)
+   ↓
+RAG / AI Context     (agentes internos com contexto real da plataforma)
+```
+
+A documentação se torna infraestrutura de IA. Cada página processada pelo pipeline vira contexto disponível para agentes. O `search-index.json` é a ponte entre docs e inteligência.
+
+---
+
 ## Requisitos da V1 (escopo desta implementação)
 
 - [x] Sync manual via `npm run sync-docs`
@@ -373,3 +477,9 @@ O `--pull` flag, o lockfile e os logs persistentes já estão preparados para es
 - [x] Normalização Windows/Linux de paths
 - [x] Arquitetura preparada para fingerprinting de assets (V2)
 - [x] Zero dependências pagas ou APIs externas
+- [x] Pipeline stages explícitos (INGEST → PUBLISH)
+- [x] IDs estáveis via frontmatter `id` (suportado, opcional)
+- [x] Leitura de `module.json` por módulo (opcional na V1)
+- [ ] Search index pré-gerado — V2
+- [ ] Manifest `module.json` como padrão — V2
+- [ ] GitHub Actions automático — V2
