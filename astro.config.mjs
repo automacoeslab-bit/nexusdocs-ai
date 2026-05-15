@@ -20,6 +20,8 @@ const generatedSidebar = existsSync('./cache/generated-sidebar.json')
   : []
 
 export default defineConfig({
+  site: 'https://automacoeslab-bit.github.io',
+  base: '/nexusdocs-ai',
   integrations: [
     starlight({
       title: brand.name,
