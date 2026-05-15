@@ -3,11 +3,19 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "sync-docs":         "node --env-file=.env scripts/sync-docs.mjs",
+    "sync-docs:pull":    "node --env-file=.env scripts/sync-docs.mjs --pull",
+    "sync-docs:dry":     "node --env-file=.env scripts/sync-docs.mjs --dry-run",
+    "sync-docs:verbose": "node --env-file=.env scripts/sync-docs.mjs --verbose",
+    "sync-docs:detect":  "node --env-file=.env scripts/detect-changes.mjs",
+    "sync-docs:process": "node --env-file=.env scripts/process-docs.mjs",
+    "sync-docs:sidebar": "node --env-file=.env scripts/generate-sidebar.mjs",
+    "dev":               "astro dev",
+    "dev:sync":          "npm run sync-docs && astro dev",
+    "start":             "astro dev",
+    "build":             "npm run sync-docs && astro build",
+    "preview":           "astro preview",
+    "astro":             "astro"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.39.2",

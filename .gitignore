@@ -19,3 +19,12 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# NexusDocs sync pipeline
+cache/generated-sidebar.json
+cache/sync.lock
+cache/last-sync.json
+logs/sync.log
+logs/errors.log
+src/content/docs/generated/
+public/modules/
