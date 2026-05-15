@@ -131,6 +131,15 @@ Após o deploy falhar:
 - Role até o final e copie o **Project ID** → anote como `VERCEL_PROJECT_ID`
 - Acesse **[vercel.com/account/settings](https://vercel.com/account/settings)** e copie o **Account ID** → anote como `VERCEL_ORG_ID`
 
+Em seguida, desative o build automático do Vercel (sem isso, ele tentará compilar sozinho a cada push e vai falhar):
+
+- Ainda nas **Settings** do projeto, clique em **Build & Development Settings**
+- Encontre o campo **Ignored Build Step**
+- Selecione **Other** no dropdown e escreva: `exit 0`
+- Clique em **Save**
+
+> **Por que isso é necessário?** O NexusDocs envia o site já compilado pelo GitHub Actions — o Vercel só precisa publicar. Sem esse passo, ele tenta recompilar do zero e falha porque não tem acesso ao repositório de conteúdo.
+
 ---
 
 ## Passo 6 — Obter os tokens necessários
@@ -177,7 +186,8 @@ O script vai perguntar as informações nesta ordem:
 |---|---|
 | Token GitHub | O token gerado no Passo 6 |
 | Repositório nexusdocs | Ex: `minha-empresa/nexusdocs` |
-| Token para ler o docs-notion | Enter para usar o mesmo token do GitHub |
+| Repositório de conteúdo | Ex: `minha-empresa/docs` (o criado no Passo 2) |
+| Token para ler o repositório de conteúdo | Enter para usar o mesmo token do GitHub |
 | Token Vercel | O token Vercel gerado no Passo 6 |
 | Vercel Account ID | O `VERCEL_ORG_ID` anotado no Passo 5 |
 | Vercel Project ID | O `VERCEL_PROJECT_ID` anotado no Passo 5 |
