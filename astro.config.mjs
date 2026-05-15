@@ -30,9 +30,7 @@ export default defineConfig({
       locales: {
         root: { label: 'Português', lang: 'pt-BR' },
       },
-      social: [
-        { icon: 'github', label: 'GitHub', href: brand.github },
-      ],
+      social: [],
       head: [
         {
           tag: 'style',
