@@ -20,6 +20,9 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
+# Claude Code local settings
+.claude/
+
 # NexusDocs sync pipeline
 cache/generated-sidebar.json
 cache/sync.lock
