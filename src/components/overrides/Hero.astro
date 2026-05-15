@@ -37,13 +37,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="nexus-hero__actions">
           {(hero.actions as HeroAction[]).map((action) => (
             <a
-              href={`${base}${action.link}`}
+              href={action.link.startsWith('http') ? action.link : `${base}${action.link}`}
               class:list={[
                 'nexus-hero__action',
                 action.variant === 'primary'
                   ? 'nexus-hero__action--primary'
                   : 'nexus-hero__action--secondary',
               ]}
+              {...action.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
             >
               {action.text}
               {action.icon?.name === 'right-arrow' && <span aria-hidden="true"> →</span>}
