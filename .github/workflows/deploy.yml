@@ -86,8 +86,14 @@ jobs:
         id: deploy
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e  # v4
 
+      - name: Preparar output para Vercel
+        run: |
+          mkdir -p .vercel/output/static
+          cp -r dist/. .vercel/output/static/
+          echo '{"version":3}' > .vercel/output/config.json
+
       - name: Deploy para Vercel
-        run: npx vercel deploy --prebuilt --prod dist/ --token ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel deploy --prebuilt --prod --token ${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
