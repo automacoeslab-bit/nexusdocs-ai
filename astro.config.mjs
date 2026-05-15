@@ -1,9 +1,23 @@
-// astro.config.mjs
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import { brand } from './src/config/brand.ts';
+import { readFileSync, existsSync } from 'fs';
+
 const { colors } = brand;
+
+// Lê o sidebar gerado pelo pipeline. Fallback vazio se ainda não existir.
+// Remove o campo `icon` dos grupos, pois o schema strict do Starlight não o aceita.
+function stripIcon(entry) {
+  if (entry && typeof entry === 'object' && Array.isArray(entry.items)) {
+    const { icon: _icon, ...rest } = entry;
+    return { ...rest, items: entry.items.map(stripIcon) };
+  }
+  return entry;
+}
+const generatedSidebar = existsSync('./cache/generated-sidebar.json')
+  ? JSON.parse(readFileSync('./cache/generated-sidebar.json', 'utf-8')).map(stripIcon)
+  : []
 
 export default defineConfig({
   integrations: [
@@ -17,8 +31,6 @@ export default defineConfig({
       social: [
         { icon: 'github', label: 'GitHub', href: brand.github },
       ],
-      // Injeta as cores da marca como CSS custom properties
-      // Qualquer mudança em brand.colors reflete automaticamente no site
       head: [
         {
           tag: 'style',
@@ -51,20 +63,7 @@ export default defineConfig({
         Pagination: 'starlight-theme-obsidian/overrides/Pagination.astro',
         ThemeSelect: 'starlight-theme-obsidian/overrides/ThemeSelect.astro',
       },
-      sidebar: [
-        { label: 'Visão Geral', link: '/visao-geral/' },
-        { label: 'Arquitetura', link: '/arquitetura/' },
-        { label: 'AI Agents', link: '/ai-agents/' },
-        {
-          label: 'Produto',
-          items: [
-            { label: 'CRM', link: '/produto/' },
-            { label: 'Workflows', link: '/workflows/' },
-          ],
-        },
-        { label: 'Governança', link: '/governanca/' },
-        { label: 'API Reference', link: '/api-reference/' },
-      ],
+      sidebar: generatedSidebar,
     }),
   ],
   vite: {
