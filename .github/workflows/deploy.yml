@@ -60,6 +60,7 @@ jobs:
         run: |
           echo "DOCS_NOTION_PATH=${{ github.workspace }}/docs-notion-src" > .env
           echo "SITE_BASE=/nexusdocs-ai" >> .env
+          echo "ASTRO_BASE_PATH=/nexusdocs-ai" >> .env
 
       - name: Sincronizar docs
         run: node --env-file=.env scripts/sync-docs.mjs
@@ -84,3 +85,9 @@ jobs:
       - name: Deploy para GitHub Pages
         id: deploy
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e  # v4
+
+      - name: Deploy para Vercel
+        run: npx vercel deploy --prebuilt --prod dist/ --token ${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
