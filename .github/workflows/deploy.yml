@@ -7,9 +7,8 @@
 #   - repository_dispatch tipo "docs-updated" (push em docs-notion)
 #   - workflow_dispatch (execução manual pelo GitHub UI)
 #
-# Secrets necessários:
-#   - Nenhum para GitHub Pages (usa GITHUB_TOKEN embutido)
-#   - NEXUSDOCS_PAT só é necessário no repositório docs-notion (ver docs-notion-trigger.yml)
+# Secrets necessários (em automacoeslab-bit/nexusdocs-ai → Settings → Secrets → Actions):
+#   - DOCS_NOTION_TOKEN → token do EduargoGrigolo com escopo "repo" (leitura do docs-notion privado)
 #
 name: Sync Docs + Build + Deploy
 
@@ -46,8 +45,7 @@ jobs:
         with:
           repository: EduargoGrigolo/docs-notion
           path: docs-notion-src
-          # Se o repositório for privado, adicione:
-          # token: ${{ secrets.DOCS_NOTION_TOKEN }}
+          token: ${{ secrets.DOCS_NOTION_TOKEN }}
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v4
