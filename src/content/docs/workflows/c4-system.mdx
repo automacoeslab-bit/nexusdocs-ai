@@ -1,0 +1,231 @@
+---
+title: C4 Design System
+description: Engine de diagramas tematizável — paleta derivada automaticamente de brand.ts
+---
+
+import { Badge, Aside } from '@astrojs/starlight/components';
+import MermaidDiagram from '../../../components/ui/MermaidDiagram.astro';
+
+# C4 Design System <Badge text="Multi-Brand" variant="tip" />
+
+Engine de diagramas tematizável. O componente `MermaidDiagram` injeta automaticamente o tema da marca atual — basta trocar `brand.ts` para atualizar todos os diagramas do projeto.
+
+---
+
+## Como funciona
+
+```
+brand.ts → c4-theme.ts → MermaidDiagram.astro → diagrama renderizado
+```
+
+1. `brand.ts` define os tokens de cor da marca
+2. `c4-theme.ts` deriva `classDef` e `themeVariables` a partir desses tokens
+3. `MermaidDiagram.astro` chama `injectTheme(code)` no frontmatter — injeta `%%{init}%%` e `classDef` automaticamente
+4. O diagrama é renderizado com a identidade visual correta
+
+**Os arquivos `.mdx` não precisam de `classDef` nem de `%%{init}%%`.**
+
+---
+
+## Classes disponíveis
+
+| Classe | Derivada de | Uso semântico |
+|--------|-------------|---------------|
+| `:::system` | `surface` + `accent` | Núcleo, AI Engine, sistema principal |
+| `:::container` | `card` + `accent` | Apps, APIs, workers, serviços |
+| `:::database` | `bg` + `muted` | Bancos de dados, stores, logs |
+| `:::decision` | `surface` + `accentHigh` | Filas, roteadores, decisões |
+| `:::external` | `bg` + `border` | Usuários humanos, sistemas externos |
+
+---
+
+## Exemplos Oficiais
+
+### C4 Level 1 — Context Diagram
+
+export const exContext = `
+flowchart TD
+
+Vendedor["Vendedor\nGerencia pipeline e leads"]:::external
+Gestor["Gestor Comercial\nAcompanha métricas"]:::external
+
+TomikCRM["TomikCRM\nCRM com IA\nOperação comercial end-to-end"]:::system
+
+Claude["Claude API\nAnthropic"]:::external
+Email["E-mail e Calendar"]:::external
+WhatsApp["WhatsApp Business"]:::external
+ERP["ERP Corporativo"]:::external
+
+Vendedor --> TomikCRM
+Gestor --> TomikCRM
+TomikCRM --> Claude
+TomikCRM --> Email
+TomikCRM --> WhatsApp
+TomikCRM --> ERP
+
+class Vendedor,Gestor,Claude,Email,WhatsApp,ERP external
+class TomikCRM system
+`;
+
+<MermaidDiagram
+  code={exContext}
+  caption="C4 Level 1 — TomikCRM e suas dependências externas"
+/>
+
+---
+
+### C4 Level 2 — Container Diagram
+
+export const exContainer = `
+flowchart TD
+
+U["Usuário"]:::external
+
+subgraph TomikCRM ["TomikCRM — Sistema"]
+    WA["Web App\nNext.js + React"]:::container
+    GW["API Gateway\nFastify + Node.js"]:::container
+    AI["AI Engine\nPython + LangChain"]:::system
+    WK["Worker\nBullMQ"]:::container
+    DB[("PostgreSQL\n+ pgvector")]:::database
+    RD[("Redis\nCache + Filas")]:::database
+end
+
+EX1["Claude API"]:::external
+EX2["E-mail / Calendar"]:::external
+
+U --> WA
+WA --> GW
+GW --> AI
+GW --> DB
+GW --> RD
+AI --> EX1
+AI --> DB
+WK --> RD
+WK --> EX2
+
+class U,EX1,EX2 external
+class WA,GW,WK container
+class AI system
+class DB,RD database
+`;
+
+<MermaidDiagram
+  code={exContainer}
+  caption="C4 Level 2 — Contêineres internos do TomikCRM"
+/>
+
+---
+
+### C4 Level 3 — Component Diagram
+
+export const exComponent = `
+flowchart TD
+
+GW["API Gateway"]:::external
+
+subgraph AIEngine ["AI Engine"]
+    Orch["Orchestrator\nLangGraph"]:::system
+    Scorer["Lead Scorer\nAgent"]:::container
+    Qualifier["Qualifier\nAgent"]:::container
+    Memory["Memory\nManager"]:::container
+    Queue{"Event Queue\nBullMQ"}:::decision
+end
+
+ClaudeAPI["Claude API"]:::external
+VectorDB[("pgvector\nEmbeddings")]:::database
+
+GW --> Orch
+Orch --> Scorer
+Orch --> Qualifier
+Orch --> Memory
+Scorer --> ClaudeAPI
+Qualifier --> ClaudeAPI
+Memory --> VectorDB
+Orch --> Queue
+
+class GW,ClaudeAPI external
+class Orch system
+class Scorer,Qualifier,Memory container
+class Queue decision
+class VectorDB database
+`;
+
+<MermaidDiagram
+  code={exComponent}
+  caption="C4 Level 3 — Componentes internos do AI Engine"
+/>
+
+---
+
+## Como escrever um diagrama
+
+```mdx
+import MermaidDiagram from '../../../components/ui/MermaidDiagram.astro';
+
+export const meuDiagrama = `
+flowchart TD
+
+A["Sistema"]:::system
+B[("Banco")]:::database
+C{"Decisão"}:::decision
+D["Externo"]:::external
+
+A --> C
+C -->|ok| B
+C -->|erro| D
+
+class A system
+class B database
+class C decision
+class D external
+`;
+
+<MermaidDiagram code={meuDiagrama} caption="Descrição do diagrama" />
+```
+
+<Aside type="tip" title="Sem classDef, sem init">
+Não inclua `%%{init}%%` nem `classDef` nas strings dos diagramas. O componente injeta tudo automaticamente a partir de `brand.ts`.
+</Aside>
+
+---
+
+## Trocar de marca
+
+Para aplicar uma identidade visual diferente em **todos** os diagramas do projeto, edite apenas `src/config/brand.ts`:
+
+```ts
+colors: {
+  accent:     '#sua-cor-primaria',
+  accentHigh: '#sua-cor-primaria-clara',
+  bg:         '#seu-fundo',
+  surface:    '#sua-superficie',
+  card:       '#seu-card',
+  border:     '#sua-borda',
+  text:       '#seu-texto',
+  muted:      '#seu-texto-secundario',
+}
+```
+
+O próximo build aplica a nova paleta em todos os diagramas automaticamente.
+
+---
+
+## Regras
+
+1. **Nunca** incluir `classDef` nos arquivos `.mdx`
+2. **Nunca** incluir `%%{init}%%` nos arquivos `.mdx`
+3. **Sempre** usar `:::system`, `:::container`, `:::database`, `:::decision` ou `:::external`
+4. **Sempre** reforçar com `class NomeDoNó classDef` ao final (dupla garantia)
+5. **Sempre** `flowchart TD`
+
+---
+
+## Referência rápida
+
+```
+system    → núcleo, sistema principal      (surface / borda accent)
+container → apps, APIs, workers            (card / borda accent)
+database  → bancos, stores, logs           (bg / borda muted)
+decision  → filas, roteadores, decisões    (surface / borda accentHigh)
+external  → usuários, sistemas externos    (bg / borda border)
+```

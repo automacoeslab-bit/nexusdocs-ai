@@ -1,18 +1,20 @@
 ---
-// src/components/ui/MermaidDiagram.astro
+import { injectTheme, C4_MERMAID_CONFIG } from '../../config/c4-theme';
+
 interface Props {
   code: string;
   caption?: string;
 }
+
 const { code, caption } = Astro.props;
 const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
-const encodedCode = encodeURIComponent(code);
+const encodedCode = encodeURIComponent(injectTheme(code));
 ---
 
 <figure class="mermaid-figure not-content">
   <div class="mermaid-wrapper" data-mermaid-id={id} data-mermaid-code={encodedCode}>
     <div class="mermaid-loading">
-      <span>Carregando diagrama...</span>
+      <span>Carregando diagrama…</span>
     </div>
   </div>
   {caption && <figcaption class="mermaid-caption">{caption}</figcaption>}
@@ -20,38 +22,20 @@ const encodedCode = encodeURIComponent(code);
 
 <script>
   import mermaid from 'mermaid';
+  import { C4_MERMAID_CONFIG } from '../../config/c4-theme';
 
-  mermaid.initialize({
-    startOnLoad: false,
-    theme: 'dark',
-    darkMode: true,
-    fontFamily: 'JetBrains Mono, monospace',
-    fontSize: 14,
-    themeVariables: {
-      darkMode: true,
-      background: '#18181B',
-      primaryColor: '#3B82F6',
-      primaryTextColor: '#FAFAFA',
-      primaryBorderColor: '#27272A',
-      lineColor: '#A1A1AA',
-      secondaryColor: '#111115',
-      tertiaryColor: '#27272A',
-      edgeLabelBackground: '#18181B',
-      nodeTextColor: '#FAFAFA',
-    },
-  });
+  mermaid.initialize(C4_MERMAID_CONFIG);
 
   async function renderDiagrams() {
     const wrappers = document.querySelectorAll<HTMLElement>('[data-mermaid-id]');
     for (const wrapper of wrappers) {
       const id = wrapper.dataset.mermaidId!;
-      const encodedCode = wrapper.dataset.mermaidCode!;
-      const code = decodeURIComponent(encodedCode);
+      const code = decodeURIComponent(wrapper.dataset.mermaidCode!);
       try {
         const { svg } = await mermaid.render(id, code);
         wrapper.innerHTML = svg;
       } catch (err) {
-        wrapper.innerHTML = `<pre class="mermaid-error">Erro ao renderizar diagrama:\n${err}</pre>`;
+        wrapper.innerHTML = `<pre class="mermaid-error">Erro ao renderizar:\n${err}</pre>`;
       }
     }
   }
@@ -69,37 +53,78 @@ const encodedCode = encodeURIComponent(code);
   }
 
   .mermaid-wrapper {
-    background-color: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 2rem;
+    background: #12170E;
+    border: 1px solid #2E3B24;
+    border-radius: 10px;
+    padding: 2rem 1.5rem;
     overflow-x: auto;
     display: flex;
     justify-content: center;
+    position: relative;
+  }
+
+  .mermaid-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 2px;
+    background: linear-gradient(90deg, #7C8D52 0%, #A0B478 50%, transparent 100%);
+    border-radius: 1px;
   }
 
   .mermaid-loading {
-    color: var(--muted);
-    font-family: 'JetBrains Mono', monospace;
+    color: #52625A;
+    font-family: 'Inter', sans-serif;
     font-size: 0.875rem;
+    padding: 2rem;
   }
 
   .mermaid-caption {
     text-align: center;
-    color: var(--muted);
-    font-size: 0.875rem;
+    color: #90A362;
+    font-size: 0.8rem;
     margin-top: 0.75rem;
     font-style: italic;
+    letter-spacing: 0.02em;
   }
 
   .mermaid-error {
     color: #F87171;
     font-size: 0.75rem;
     padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
   }
 
-  .mermaid-wrapper svg {
+  .mermaid-wrapper :global(svg) {
     max-width: 100%;
     height: auto;
+    font-family: 'Inter', sans-serif !important;
+  }
+
+  .mermaid-wrapper :global(.node rect),
+  .mermaid-wrapper :global(.node polygon) {
+    rx: 6;
+    ry: 6;
+  }
+
+  .mermaid-wrapper :global(.edgeLabel) {
+    background-color: #12170E !important;
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+
+  .mermaid-wrapper :global(.nodeLabel),
+  .mermaid-wrapper :global(.label) {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 13px !important;
+  }
+
+  .mermaid-wrapper :global(.cluster-label) {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 12px !important;
+    fill: #A0B478 !important;
+    font-weight: 600;
   }
 </style>

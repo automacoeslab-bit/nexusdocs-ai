@@ -1,0 +1,32 @@
+---
+import TableOfContents from 'virtual:starlight/components/TableOfContents';
+---
+
+{
+  Astro.locals.starlightRoute.toc && (
+    <div class="right-sidebar-panel sl-hidden lg:sl-block">
+      <div class="sl-container">
+        <TableOfContents />
+      </div>
+    </div>
+  )
+}
+
+<style>
+  @layer starlight.core {
+    .right-sidebar-panel {
+      padding: 1rem var(--sl-sidebar-pad-x);
+    }
+    .sl-container {
+      width: calc(var(--sl-sidebar-width) - 2 * var(--sl-sidebar-pad-x));
+    }
+    @media (min-width: 72rem) {
+      .sl-container {
+        max-width: calc(
+          (100vw - var(--sl-sidebar-width) - 2 * var(--sl-content-pad-x) - 2 *
+            var(--sl-sidebar-pad-x)) * 0.25
+        );
+      }
+    }
+  }
+</style>

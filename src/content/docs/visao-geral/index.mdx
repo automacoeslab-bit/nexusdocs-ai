@@ -38,15 +38,18 @@ Você define **o que** quer alcançar. Os agentes decidem **como** executar. O s
 
 export const conceitoCentral = `
 flowchart TD
-    A["🎯 Usuário define\nO QUE quer alcançar\nmetas · KPIs · regras"]
-    B["🤖 Agentes decidem\nCOMO executar\nestratégias · canais · timing"]
-    C["📊 Sistema mede\nRESULTADOS\nmétricas · evolução · ajustes"]
-    D["🔄 Ciclo se repete\nEVOLUÇÃO AUTOMÁTICA\nAAES · A/B · otimização"]
-    A --> B --> C --> D --> A
-    style A fill:#2E3B24,color:#fff,stroke:#7C8D52
-    style B fill:#252129,color:#fff,stroke:#7C8D52
-    style C fill:#2E3B24,color:#fff,stroke:#7C8D52
-    style D fill:#252129,color:#fff,stroke:#7C8D52
+
+A["Usuário define\nO QUE quer alcançar\nmetas · KPIs · regras"]:::external
+B["Agentes decidem\nCOMO executar\nestratégias · canais · timing"]:::system
+C["Sistema mede\nRESULTADOS\nmétricas · evolução · ajustes"]:::container
+D["Ciclo se repete\nEVOLUÇÃO AUTOMÁTICA\nAAES · A/B · otimização"]:::decision
+
+A --> B --> C --> D --> A
+
+class A external
+class B system
+class C container
+class D decision
 `;
 
 <MermaidDiagram code={conceitoCentral} />
@@ -93,16 +96,18 @@ Uma clínica de estética configura: *"Quero 30 agendamentos por semana com tick
 ### Como o AAES funciona
 
 export const aaesCode = `
-flowchart LR
-    EX["⚙️ Execução\nAgente executa com\nconfiguração atual"]
-    ME["📏 Medição\nSistema coleta\nmétricas da execução"]
-    AN["🔬 Análise\nCompara com baseline\ne alternativas (A/B)"]
-    AJ["⚡ Ajuste\nAplica mudanças\nautomaticamente"]
-    EX --> ME --> AN --> AJ --> EX
-    style EX fill:#2E3B24,color:#fff,stroke:#7C8D52
-    style ME fill:#252129,color:#fff,stroke:#7C8D52
-    style AN fill:#2E3B24,color:#fff,stroke:#7C8D52
-    style AJ fill:#252129,color:#fff,stroke:#7C8D52
+flowchart TD
+
+EX["Execução\nAgente executa com\nconfiguração atual"]:::system
+ME["Medição\nSistema coleta\nmétricas da execução"]:::container
+AN["Análise\nCompara com baseline\ne alternativas A/B"]:::decision
+AJ["Ajuste\nAplica mudanças\nautomaticamente"]:::system
+
+EX --> ME --> AN --> AJ --> EX
+
+class EX,AJ system
+class ME container
+class AN decision
 `;
 
 <MermaidDiagram code={aaesCode} />
@@ -164,21 +169,27 @@ O agente de follow-up está usando um prompt com 15% de taxa de resposta. O AAES
 
 export const multiTenantCode = `
 flowchart TD
-    subgraph MASTER["Master Supabase (Compartilhado)"]
-        AUTH[Autenticação]
-        BILLING[Billing / Stripe]
-        GOV[Governance\norganizações · planos · licenças]
-        PIPELINES[Agent Pipelines & Versions]
-        LOGS[Executions Log]
-    end
-    subgraph CLIENT["Client Supabase (Por organização)"]
-        HOSTED["Modo 1: tomik_hosted\nIsolamento via RLS + organization_id"]
-        BYO["Modo 2: BYO\nCliente traz sua própria instância"]
-        DATA[CRM · Appointments · Financeiro\nMensagens · Memória IA]
-    end
-    MASTER --> CLIENT
-    style MASTER fill:#1C2118,stroke:#7C8D52,color:#fff
-    style CLIENT fill:#252129,stroke:#7C8D52,color:#fff
+
+subgraph MASTER["Master Supabase — Compartilhado"]
+    AUTH["Autenticação"]:::container
+    BILLING["Billing / Stripe"]:::container
+    GOV["Governance\norganizações · planos · licenças"]:::system
+    PIPELINES["Agent Pipelines & Versions"]:::system
+    LOGS["Executions Log"]:::database
+end
+
+subgraph CLIENT["Client Supabase — Por organização"]
+    HOSTED["Modo 1: tomik_hosted\nRLS + organization_id"]:::container
+    BYO["Modo 2: BYO\nCliente traz sua própria instância"]:::external
+    DATA["CRM · Appointments · Financeiro\nMensagens · Memória IA"]:::database
+end
+
+MASTER --> CLIENT
+
+class AUTH,BILLING,HOSTED container
+class GOV,PIPELINES system
+class LOGS,DATA database
+class BYO external
 `;
 
 <MermaidDiagram code={multiTenantCode} />
@@ -240,25 +251,31 @@ flowchart TD
 
 export const jornadaCode = `
 flowchart TD
-    A[Campanha / Formulário] --> B[Webhook captura lead]
-    B --> C["🤖 Agente de Qualificação\nScore: 87/100"]
-    C --> D["Pipeline: Qualificado"]
-    D --> E["🤖 Agente de Follow-up\nWhatsApp automático"]
-    E --> F{Lead responde?}
-    F -->|Sim| G["🤖 Agente negocia\ncom contexto CRM"]
-    G --> H["Lead quer agendar"]
-    H --> I["🤖 Agente consulta agenda\nOferece 3 horários"]
-    I --> J["Agendamento criado\n+ confirmação enviada"]
-    J --> K["Consulta realizada"]
-    K --> L["Pagamento via gateway"]
-    L --> M["Pipeline: Convertido\n📊 AAES analisa e otimiza"]
-    F -->|Não responde| N["Sequência multi-canal\nE-mail, novo WA..."]
-    N --> F
-    style C fill:#252129,stroke:#7C8D52,color:#fff
-    style E fill:#252129,stroke:#7C8D52,color:#fff
-    style G fill:#252129,stroke:#7C8D52,color:#fff
-    style I fill:#252129,stroke:#7C8D52,color:#fff
-    style M fill:#2E3B24,stroke:#7C8D52,color:#fff
+
+A["Campanha / Formulário"]:::external
+B["Webhook captura lead"]:::container
+C["Agente de Qualificação\nScore: 87/100"]:::system
+D["Pipeline: Qualificado"]:::database
+E["Agente de Follow-up\nWhatsApp automático"]:::system
+F{"Lead responde?"}:::decision
+G["Agente negocia\ncom contexto CRM"]:::system
+H["Lead quer agendar"]:::container
+I["Agente consulta agenda\nOferece 3 horários"]:::system
+J["Agendamento criado\n+ confirmação enviada"]:::database
+K["Consulta realizada"]:::container
+L["Pagamento via gateway"]:::container
+M["Pipeline: Convertido\nAAES analisa e otimiza"]:::database
+N["Sequência multi-canal\nE-mail, novo WA..."]:::system
+
+A --> B --> C --> D --> E --> F
+F -->|Sim| G --> H --> I --> J --> K --> L --> M
+F -->|Não responde| N --> F
+
+class A external
+class B,H,K,L container
+class C,E,G,I,N system
+class D,J,M database
+class F decision
 `;
 
 <MermaidDiagram code={jornadaCode} />
@@ -332,33 +349,18 @@ Não existe concorrente direto no Brasil que combine CRM + agentes IA autônomos
 ## Roadmap
 
 export const roadmapCode = `
-timeline
-    title Roadmap TomikCRM
-    section Fase 1 — Fundação (2025–2026)
-        Concluído : CRM Kanban
-                  : Agenda e Financeiro
-                  : WhatsApp Meta Cloud API
-                  : Agent Runtime
-                  : 8 Gateways BR
-        Em andamento : Follow-up automatizado
-                     : AAES v1
-                     : Crew Agents
-    section Fase 2 — Canais (2026)
-        Planejado : E-mail OS
-                  : Instagram DM
-                  : LiveChat widget
-                  : SMS
-                  : Inbox unificada
-    section Fase 3 — Autonomia Total (2026–2027)
-        Futuro : AAES v3 contínuo
-               : Agente vendas end-to-end
-               : Agente de retenção
-               : Self-healing pipelines
-    section Fase 4 — Plataforma (2027+)
-        Futuro : Marketplace de agentes
-               : SDK para terceiros
-               : API pública
-               : Internacionalização LATAM
+flowchart TD
+
+F1["Fase 1 — Fundação\n2025–2026\nCRM · WhatsApp · Agent Runtime · 8 Gateways BR"]:::system
+F2["Fase 2 — Canais\n2026\nE-mail OS · Instagram DM · LiveChat · Inbox unificada"]:::container
+F3["Fase 3 — Autonomia Total\n2026–2027\nAAES v3 · Agente vendas end-to-end · Self-healing"]:::system
+F4["Fase 4 — Plataforma\n2027+\nMarketplace · SDK · API pública · LATAM"]:::decision
+
+F1 --> F2 --> F3 --> F4
+
+class F1,F3 system
+class F2 container
+class F4 decision
 `;
 
 <MermaidDiagram code={roadmapCode} />

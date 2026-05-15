@@ -8,59 +8,61 @@ import MermaidDiagram from '../../../components/ui/MermaidDiagram.astro';
 
 export const c4Context = `
 flowchart TD
-    U1[Vendedor\nGerencia leads e oportunidades] --> CRM
-    U2[Gestor Comercial\nAcompanha métricas e metas] --> CRM
-    U3[Time de Engenharia\nDesenvolve e mantém] --> CRM
 
-    CRM[CRM com IA\nPlataforma de gestão de relacionamento\npotencializada por agentes de IA]
+U1["Vendedor\nGerencia leads e oportunidades"]:::external
+U2["Gestor Comercial\nAcompanha métricas e metas"]:::external
+U3["Time de Engenharia\nDesenvolve e mantém"]:::external
 
-    CRM --> E1[E-mail e Calendar\nGmail, Outlook]
-    CRM --> E2[WhatsApp Business\nComunicação com leads]
-    CRM --> E3[Anthropic Claude API\nLLM para reasoning]
-    CRM --> E4[ERP Corporativo\nDados de clientes e contratos]
+CRM["CRM com IA\nPlataforma de gestão de relacionamento\npotencializada por agentes de IA"]:::system
 
-    style CRM fill:#1D4ED8,color:#fff,stroke:#3B82F6
-    style U1 fill:#18181B,color:#FAFAFA,stroke:#27272A
-    style U2 fill:#18181B,color:#FAFAFA,stroke:#27272A
-    style U3 fill:#18181B,color:#FAFAFA,stroke:#27272A
-    style E1 fill:#111115,color:#A1A1AA,stroke:#27272A
-    style E2 fill:#111115,color:#A1A1AA,stroke:#27272A
-    style E3 fill:#111115,color:#A1A1AA,stroke:#27272A
-    style E4 fill:#111115,color:#A1A1AA,stroke:#27272A
+E1["E-mail e Calendar\nGmail, Outlook"]:::external
+E2["WhatsApp Business\nComunicação com leads"]:::external
+E3["Anthropic Claude API\nLLM para reasoning"]:::external
+E4["ERP Corporativo\nDados de clientes e contratos"]:::external
+
+U1 --> CRM
+U2 --> CRM
+U3 --> CRM
+CRM --> E1
+CRM --> E2
+CRM --> E3
+CRM --> E4
+
+class U1,U2,U3,E1,E2,E3,E4 external
+class CRM system
 `;
 
 export const c4Container = `
 flowchart TD
-    U[Usuario\nVendedor ou Gestor]
 
-    subgraph CRM [CRM com IA]
-        WA[Web App\nNext.js e React\nInterface principal do CRM]
-        AG[API Gateway\nNode.js e Fastify\nAutenticacao e roteamento]
-        AI[AI Engine\nPython e LangChain\nOrquestracao de agentes]
-        WK[Background Worker\nNode.js e BullMQ\nFilas assincronas]
-        DB[(PostgreSQL com pgvector\nDados e embeddings)]
-        RD[(Redis\nCache e filas)]
-    end
+U["Usuario\nVendedor ou Gestor"]:::external
 
-    EX1[Claude API\nAnthropic]
-    EX2[E-mail e Calendar\nProvedores externos]
+subgraph CRM ["CRM com IA"]
+    WA["Web App\nNext.js e React"]:::container
+    AG["API Gateway\nNode.js e Fastify"]:::container
+    AI["AI Engine\nPython e LangChain"]:::system
+    WK["Background Worker\nBullMQ"]:::container
+    DB[("PostgreSQL\n+ pgvector")]:::database
+    RD[("Redis\nCache e filas")]:::database
+end
 
-    U --> WA
-    WA --> AG
-    AG --> AI
-    AG --> DB
-    AG --> RD
-    AI --> EX1
-    AI --> DB
-    WK --> EX2
-    WK --> RD
+EX1["Claude API\nAnthropic"]:::external
+EX2["E-mail e Calendar\nProvedores externos"]:::external
 
-    style WA fill:#1D4ED8,color:#fff,stroke:#3B82F6
-    style AG fill:#1D4ED8,color:#fff,stroke:#3B82F6
-    style AI fill:#7C3AED,color:#fff,stroke:#8B5CF6
-    style WK fill:#18181B,color:#FAFAFA,stroke:#27272A
-    style DB fill:#064E3B,color:#fff,stroke:#059669
-    style RD fill:#7F1D1D,color:#fff,stroke:#DC2626
+U --> WA
+WA --> AG
+AG --> AI
+AG --> DB
+AG --> RD
+AI --> EX1
+AI --> DB
+WK --> RD
+WK --> EX2
+
+class U,EX1,EX2 external
+class WA,AG,WK container
+class AI system
+class DB,RD database
 `;
 
 # Arquitetura do Sistema <Badge text="C4 Model" variant="tip" />

@@ -7,22 +7,40 @@ import { Badge } from '@astrojs/starlight/components';
 import MermaidDiagram from '../../../components/ui/MermaidDiagram.astro';
 import FeatureCard from '../../../components/ui/FeatureCard.astro';
 
-export const diagramCode = `flowchart TD
-    A[Novo Lead Criado] --> B{Lead Scorer}
-    B -->|Score maior que 70| C[Alta Prioridade\nNotifica vendedor]
-    B -->|Score 40 a 69| D[Média Prioridade\nFila normal]
-    B -->|Score menor que 40| E[Baixa Prioridade\nNurturing automático]
-    C --> F{Qualifier Agent}
-    D --> F
-    E --> G[Follow-up Agent\nsequência nurturing]
-    F -->|Qualificado| H[Oportunidade criada\nno pipeline]
-    F -->|Não qualificado| I[Lead descartado\ncom motivo registrado]
-    F -->|Sem resposta| J[Follow-up Agent\nreativação]
-    H --> K[Vendedor assume\ncom contexto completo]
-    J --> F
-    style A fill:#3B82F6,color:#fff,stroke:#1D4ED8
-    style H fill:#059669,color:#fff,stroke:#064E3B
-    style I fill:#DC2626,color:#fff,stroke:#7F1D1D`;
+export const diagramCode = `
+flowchart TD
+
+A["Novo Lead Criado"]:::external
+B{"Lead Scorer"}:::decision
+C["Alta Prioridade\nNotifica vendedor"]:::container
+D["Média Prioridade\nFila normal"]:::container
+E["Baixa Prioridade\nNurturing automático"]:::container
+F{"Qualifier Agent"}:::decision
+G["Follow-up Agent\nsequência nurturing"]:::system
+H["Oportunidade criada\nno pipeline"]:::database
+I["Lead descartado\ncom motivo registrado"]:::container
+J["Follow-up Agent\nreativação"]:::system
+K["Vendedor assume\ncom contexto completo"]:::external
+
+A --> B
+B -->|Score maior que 70| C
+B -->|Score 40 a 69| D
+B -->|Score menor que 40| E
+C --> F
+D --> F
+E --> G
+F -->|Qualificado| H
+F -->|Não qualificado| I
+F -->|Sem resposta| J
+H --> K
+J --> F
+
+class A,K external
+class B,F decision
+class C,D,E,I container
+class G,J system
+class H database
+`;
 
 # AI Agents <Badge text="Core System" variant="success" />
 

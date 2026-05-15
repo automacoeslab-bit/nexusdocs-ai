@@ -31,12 +31,13 @@ export const brand = {
   // Paleta de cores — identidade visual TomikCRM 2026
   // Fonte: manual de marca (Sociedade das Marcas)
   colors: {
-    accent:  '#7C8D52', // verde oliva — cor de destaque da marca
-    bg:      '#12170E', // verde escuro quase preto — fundo da página
-    surface: '#1C2118', // sidebar, header (entre bg e card)
-    card:    '#252129', // cards, code blocks (cinza-roxo escuro da marca)
-    border:  '#2E3B24', // divisores, bordas (+12.5% do verde escuro)
-    text:    '#FFFFFF', // texto principal
-    muted:   '#90A362', // texto secundário (+12.5% do accent)
+    accent:      '#7C8D52', // verde oliva — cor de destaque da marca
+    accentHigh:  '#A0B478', // accent +25% lightness — headings H4, bordas de ênfase
+    bg:          '#12170E', // verde escuro quase preto — fundo da página
+    surface:     '#1C2118', // sidebar, header (entre bg e card)
+    card:        '#252129', // cards, code blocks (cinza-roxo escuro da marca)
+    border:      '#2E3B24', // divisores, bordas (+12.5% do verde escuro)
+    text:        '#FFFFFF', // texto principal
+    muted:       '#90A362', // texto secundário (+12.5% do accent)
   },
 } as const;
