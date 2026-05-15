@@ -57,9 +57,18 @@ function validateMarkdown(content, sourceModulePath, filename, log) {
     if (end === -1) warnings.push('frontmatter não fechado (falta ---)')
   }
 
-  // Referências a diags/ que não existem na fonte
+  // Referências a diags/ via sintaxe Markdown ![]()
   const diagRefs = [...content.matchAll(/\(diags\/([^)]+)\)/g)]
   for (const [, diagFile] of diagRefs) {
+    const diagPath = join(sourceModulePath, 'diags', diagFile)
+    if (!existsSync(diagPath)) {
+      warnings.push(`imagem referenciada não encontrada: diags/${diagFile}`)
+    }
+  }
+
+  // Referências a diags/ via tag HTML <img src="diags/...">
+  const imgTagRefs = [...content.matchAll(/<img\s[^>]*src="diags\/([^"]+)"/gi)]
+  for (const [, diagFile] of imgTagRefs) {
     const diagPath = join(sourceModulePath, 'diags', diagFile)
     if (!existsSync(diagPath)) {
       warnings.push(`imagem referenciada não encontrada: diags/${diagFile}`)
@@ -94,6 +103,11 @@ function rewriteAssetPaths(content, slug) {
   content = content.replace(
     /(!?\[[^\]]*\])\(((?!https?:\/\/|\/|diags\/)([^)]+\.(png|jpg|jpeg|gif|webp|svg)))\)/gi,
     (_, prefix, path) => `${prefix}(${siteBase}/modules/${slug}/${assetPath(path)})`
+  )
+  // <img src="diags/foo.png"> → <img src="{siteBase}/modules/visao-estrategia/diags/foo.png">
+  content = content.replace(
+    /(<img\s[^>]*src=")diags\/([^"]+)(")/gi,
+    (_, before, file, after) => `${before}${siteBase}/modules/${slug}/diags/${file}${after}`
   )
   return content
 }
