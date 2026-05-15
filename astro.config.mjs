@@ -4,6 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 import { brand } from './src/config/brand.ts';
 import { readFileSync, existsSync } from 'fs';
 
+const base = process.env.ASTRO_BASE_PATH ?? '/nexusdocs-ai'
+const site = process.env.ASTRO_SITE_URL || 'https://automacoeslab-bit.github.io'
+
 const { colors } = brand;
 
 // Lê o sidebar gerado pelo pipeline. Fallback vazio se ainda não existir.
@@ -20,8 +23,8 @@ const generatedSidebar = existsSync('./cache/generated-sidebar.json')
   : []
 
 export default defineConfig({
-  site: 'https://automacoeslab-bit.github.io',
-  base: '/nexusdocs-ai',
+  site,
+  base: base || undefined,
   integrations: [
     starlight({
       title: brand.name,
