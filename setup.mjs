@@ -75,7 +75,14 @@ async function main() {
     process.exit(1)
   }
 
-  const docsToken = await askHidden('Token para ler o docs-notion (Enter = usar o mesmo): ')
+  const docsRepoInput = await ask('Repositório de conteúdo (ex: minha-org/docs): ')
+  const docsRepo = docsRepoInput.trim()
+  if (!docsRepo.includes('/')) {
+    console.error('Formato inválido. Use: org/repo')
+    process.exit(1)
+  }
+
+  const docsToken = await askHidden('Token para ler o repositório de conteúdo (Enter = usar o mesmo): ')
   const finalDocsToken = docsToken.trim() || ghToken
 
   const vercelToken = await askHidden('Token Vercel: ')
@@ -91,6 +98,8 @@ async function main() {
 
   console.log('\nConfigurando secrets...')
   try {
+    setSecret(repo, 'DOCS_REPO', docsRepo)
+    console.log('✓ DOCS_REPO')
     setSecret(repo, 'DOCS_NOTION_TOKEN', finalDocsToken)
     console.log('✓ DOCS_NOTION_TOKEN')
     setSecret(repo, 'VERCEL_TOKEN', vercelToken)

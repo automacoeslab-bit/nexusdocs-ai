@@ -8,7 +8,8 @@
 #   - workflow_dispatch (execução manual pelo GitHub UI)
 #
 # Secrets necessários (em automacoeslab-bit/nexusdocs-ai → Settings → Secrets → Actions):
-#   - DOCS_NOTION_TOKEN → token do EduargoGrigolo com escopo "repo" (leitura do docs-notion privado)
+#   - DOCS_REPO         → repositório de conteúdo (ex: minha-org/docs)
+#   - DOCS_NOTION_TOKEN → token com escopo "repo" para ler o repositório de conteúdo
 #
 name: Sync Docs + Build + Deploy
 
@@ -43,7 +44,7 @@ jobs:
       - name: Checkout docs-notion
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
         with:
-          repository: EduargoGrigolo/docs-notion
+          repository: ${{ secrets.DOCS_REPO }}
           path: docs-notion-src
           token: ${{ secrets.DOCS_NOTION_TOKEN }}
 
